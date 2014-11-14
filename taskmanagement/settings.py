@@ -24,7 +24,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'djcelery',
     'admintasks',
     'web',
+    'finance',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -61,8 +62,12 @@ WSGI_APPLICATION = 'taskmanagement.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'finance',
+        'USER': 'finance',
+        'PASSWORD': 'finance',
+        'HOST': 'localhost',
+        'PORT': '3306'
     }
 }
 
