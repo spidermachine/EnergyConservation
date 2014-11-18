@@ -50,7 +50,9 @@ class TableParser(Parser):
         soup = BeautifulSoup(string, from_encoding="utf-8")
         for tr in soup.find_all(tags.tr):
             tds = tr.find_all(tags.td)
-            items.append(self.parse_item(tds))
+            item = self.parse_item(tds)
+            if item:
+                items.append(item)
 
         return items
 

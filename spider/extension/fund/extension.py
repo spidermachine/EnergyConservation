@@ -38,19 +38,24 @@ class FundData(HBaseData):
         return self.code
 
     def table(self):
-        return "fund"
+        return tables.TABLE_FUND
 
     def columns(self):
 
-        return {"cf": {"code": self.code, "name": self.name, "url": self.url}}
+        return {tables.COLUMN_FAMILY: {tables.CODE: self.code,
+                                       tables.NAME: self.name,
+                                       tables.URL: self.url}}
 
 
 class FundParser(TableParser):
 
     def parse_item(self, tds):
-
-        a = tds[4].find("a")
-        return FundData(tds[3].string, a.string, a["href"])
+        try:
+            a = tds[4].find("a")
+            return FundData(tds[3].string, a.string, a["href"])
+        except Exception as e:
+            print e
+            return None
 
 
 
@@ -82,11 +87,13 @@ class FundJournalData(HBaseData):
 
     def table(self):
 
-        return "fund_journal"
+        return tables.TABLE_FUND_JOURNAL
 
     def columns(self):
 
-        return {tables.COLUMN_FAMILY: {tables.CODE: self.code, "date": self.date, "price": self.price, "percent": self.percent}}
+        return {tables.COLUMN_FAMILY: {tables.CODE: self.code, tables.DATE: self.date,
+                                       tables.PRICE: self.price,
+                                       tables.PERCENT: self.percent}}
 
 
 class FundJournalParser(TableParser):
@@ -106,7 +113,8 @@ class FundJournalParser(TableParser):
     def parse_item(self, tds):
 
         a = tds[4].find("a")
-        return FundJournalData(a.string, tds[3].string, self.date, tds[7].string, tds[9].string, tds[10].string)
+        return FundJournalData(a.string, tds[3].string, self.date,
+                               tds[7].string, tds[9].string, tds[10].string)
 
 
 class FundHistoryDataGenerator(TableBodyDataGenerator):
@@ -131,4 +139,5 @@ class FundHistoryDataGenerator(TableBodyDataGenerator):
 class FundHistoryParser(ShareTableParser):
 
     def parse_item(self, tds):
-        return FundJournalData(self.generator.extra['code'], tds[0].string, tds[1].string, tds[3].string)
+        return FundJournalData(self.generator.extra['code'], tds[0].string,
+                               tds[1].string, tds[3].string)

@@ -6,6 +6,7 @@ __author__ = 'cping.ju'
 from spider.extension.generators import TableParser
 from spider.framework.browser import JSDataGenerator
 from spider.framework.storage import HBaseData
+from public.utils import tables
 
 from bs4 import BeautifulSoup
 
@@ -43,13 +44,15 @@ class ShareData(HBaseData):
         self.fund = fund
 
     def table(self):
-        return "share"
+        return tables.TABLE_SHARE
 
     def row(self):
-        return "{1}_{2}".format(self.fund, int(round(time.time() * 1000)))
+        return tables.ROW_ID.format(self.fund, int(round(time.time() * 1000)))
 
     def columns(self):
-        return {"cf": {"code": self.code, "name": self.name, "percentage": self.percentage, "amount": self.amount}}
+        return {tables.COLUMN_FAMILY: {tables.CODE: self.code, tables.NAME: self.name,
+                                       tables.PERCENTAGE: self.percentage,
+                                       tables.AMOUNT: self.amount}}
 
 
 class ShareTableParser(TableParser):

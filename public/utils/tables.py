@@ -4,7 +4,7 @@
 __author__ = 'cping.ju'
 
 # table name
-FINANCE = "finance"
+TABLE_FINANCE = "finance"
 COLUMN_FAMILY = "cf"
 # row format
 ROW_ID = "{0}_{1}"
@@ -13,12 +13,25 @@ NAME = "name"
 CODE = "code"
 PRICE = "price"
 DATE = "date"
+URL = "url"
 
 #industry
-INDUSTRY = "industry"
+TABLE_INDUSTRY = "industry"
 
 MAJOR = "major"
 FLOW = "flow"
 AMPLITUDE = "amplitude"
+
+# fund_journal
+TABLE_FUND_JOURNAL = "fund_journal"
+PERCENT = "percent"
+
+# share
+TABLE_SHARE = "share"
+PERCENTAGE = "percentage"
+AMOUNT = "amount"
+
+# fund
+TABLE_FUND = "fund"
 
 

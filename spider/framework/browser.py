@@ -33,12 +33,15 @@ class JSDataGenerator(DataGenerator):
         self.browser.set_web_settings(QWebSettings.AutoLoadImages, False)
         self.browser.load_js()
         self.extra = extra
+        if self.extra.get('show', False):
+            self.browser.show();
         self.is_load = self.browser.load(self.extra['url'], load_timeout=self.extra['timeout'])
 
     def data(self):
 
         if self.is_load:
             html = unicode(self.browser.webframe.toHtml())
+            # print html
             self.is_load = False
             return True, html
         else:

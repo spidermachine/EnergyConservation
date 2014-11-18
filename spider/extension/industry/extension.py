@@ -27,7 +27,7 @@ class IndustryData(HBaseData):
 
     def table(self):
 
-        return tables.INDUSTRY
+        return tables.TABLE_INDUSTRY
 
     def row(self):
 

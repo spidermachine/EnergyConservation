@@ -63,7 +63,7 @@ class WorkerFacade(object):
         """
         history price of fund
         """
-        data_generator = FundHistoryParser(extra)
+        data_generator = FundHistoryDataGenerator(extra)
         parser = FundHistoryParser()
         WorkerFacade.worker(data_generator, parser)
 
