@@ -5,5 +5,5 @@ __author__ = 'cping.ju'
 
 class Parser(object):
 
-    def parse(self, string):
+    def parse(self, string, generator=None):
         pass

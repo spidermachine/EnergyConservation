@@ -3,12 +3,9 @@
 #
 __author__ = 'cping.ju'
 
-from bs4 import BeautifulSoup
-
 
 from spider.framework.storage import HBaseData
 from spider.extension.generators import TableBodyDataGenerator, TableParser
-from spider.extension import tags
 
 from public.utils import tables, tools
 

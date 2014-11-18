@@ -4,7 +4,7 @@
 __author__ = 'cping.ju'
 
 
-from spider.framework.browser import JSDataGenerator
+from spider.framework.browser import NextPageDataGenerator
 from spider.framework.parser import Parser
 from . import tags
 
@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 
 
 
-class TableDataGenerator(JSDataGenerator):
+class TableDataGenerator(NextPageDataGenerator):
 
     def __init__(self, extra):
         super(TableDataGenerator, self).__init__(extra)
@@ -45,12 +45,12 @@ class TableBodyDataGenerator(TableDataGenerator):
 
 class TableParser(Parser):
 
-    def parse(self, string):
+    def parse(self, string, generator=None):
         items = []
         soup = BeautifulSoup(string, from_encoding="utf-8")
         for tr in soup.find_all(tags.tr):
             tds = tr.find_all(tags.td)
-            items.append(self.parse(tds))
+            items.append(self.parse_item(tds))
 
         return items
 

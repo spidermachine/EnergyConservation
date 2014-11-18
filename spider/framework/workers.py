@@ -34,7 +34,7 @@ class BasicWorker(object):
         parse data
         """
         if self.parser:
-            return self.parser.parse(data)
+            return self.parser.parse(data, self.data_generator)
         return data
 
     def save(self, data):

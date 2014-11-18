@@ -67,8 +67,8 @@ class NextPageDataGenerator(JSDataGenerator):
 
         web_elements = self.browser.webframe.findAllElements(self.extra['tag'])
         for element in web_elements:
-            if element.toInnerXml == self.extra['text']:
-                element.evaluateJavaScript(self.extra['jscode'])
+            if str(element.toInnerXml()).strip() == self.extra['text']:
+                element.evaluateJavaScript("this.onclick()")
                 self.browser.wait_load(timeout=self.extra['timeout'])
                 self.is_load = True
                 break

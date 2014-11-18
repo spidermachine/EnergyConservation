@@ -3,14 +3,9 @@
 #
 __author__ = 'cping.ju'
 
-from spider.framework.parser import Parser
 from spider.framework.storage import HBaseData
-from spider.extension import tags
 from spider.extension.generators import TableBodyDataGenerator, TableParser
 from public.utils import tables
-
-
-from bs4 import BeautifulSoup
 
 
 
@@ -37,7 +32,7 @@ class YJLData(HBaseData):
         return tables.ROW_ID.format(self.code, self.data_string)
 
     def columns(self):
-        return {tables.NAME: self.name, tables.CODE: self.code, tables.PRICE: self.price, tables.DATE: self.data_string}
+        return {"cf":{tables.NAME: self.name, tables.CODE: self.code, tables.PRICE: self.price, tables.DATE: self.data_string}}
 
 
 class YJLParser(TableParser):

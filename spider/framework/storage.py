@@ -43,7 +43,7 @@ class HBaseStorage(Storage):
     def batch_save(self, data):
 
         if isinstance(data, list):
-            b = self.c.table(list[0].table()).batch()
+            b = self.c.table(data[0].table()).batch()
             if b:
                 for item in data:
                     b.insert(item.row(), item.columns())

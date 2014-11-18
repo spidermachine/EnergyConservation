@@ -5,6 +5,7 @@ __author__ = 'cping.ju'
 
 # table name
 FINANCE = "finance"
+COLUMN_FAMILY = "cf"
 # row format
 ROW_ID = "{0}_{1}"
 # column name
