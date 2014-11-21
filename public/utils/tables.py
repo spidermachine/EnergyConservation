@@ -33,5 +33,6 @@ AMOUNT = "amount"
 
 # fund
 TABLE_FUND = "fund"
+TABLE_VISITED = "visited"
 
 
