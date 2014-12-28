@@ -24,10 +24,11 @@ class GradeDataGenerator(TableBodyDataGenerator):
 
 class GradeData(HBaseData):
 
-    def __init__(self, code, score):
+    def __init__(self, code, score, ret):
 
         self.code = code
         self.score = score
+        self.ret = ret
 
     def table(self):
         return tables.TABLE_GRADE
@@ -49,10 +50,13 @@ class GradeDataParser(TableParser):
             tds = tr.find_all(tags.td)
             item = self.parse_item(tds)
             if item:
+                # stop load data
+                if item.score == 0 and generator != None:
+                    generator.extra['continue'] = False
+                    break
                 items.append(item)
-
         return items
 
     def parse_item(self, tds):
 
-        return GradeData(tds[2].find('a').string, re.findall(r'\d+',tds[5].find('img')['src'])[0])
+        return GradeData(tds[2].find('a').string, re.findall(r'\d+',tds[5].find('img')['src'])[0], tds[10].string)

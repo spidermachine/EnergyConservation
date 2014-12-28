@@ -33,8 +33,9 @@ class JSDataGenerator(DataGenerator):
         self.browser.set_web_settings(QWebSettings.AutoLoadImages, False)
         self.browser.load_js()
         self.extra = extra
+        # show browser if True
         if self.extra.get('show', False):
-            self.browser.show();
+            self.browser.show()
         self.is_load = self.browser.load(self.extra['url'], load_timeout=self.extra['timeout'])
 
     def data(self):
@@ -55,10 +56,11 @@ class NextPageDataGenerator(JSDataGenerator):
         self.__first_load = True
 
     def data(self):
-
+        # the first load
         if self.__first_load:
             self.__first_load = False
         else:
+            # collection data of the next page if continue is True, or else do nothing
             if self.extra.get('continue', False):
                 self.load_next_page()
 
@@ -67,13 +69,16 @@ class NextPageDataGenerator(JSDataGenerator):
     def load_next_page(self):
 
         self.is_load = False
-
+        # sleep 3 seconds, if no command
         sleep = self.extra.get('sleep', 3)
         time.sleep(sleep)
 
+        # find link of next page
         web_elements = self.browser.webframe.findAllElements(self.extra['tag'])
         for element in web_elements:
+            # found the next page
             if str(element.toInnerXml()).strip() == self.extra['text']:
+                # trigger the link and load the next page
                 element.evaluateJavaScript("this.onclick()")
                 self.browser.wait_load(timeout=self.extra['timeout'])
                 self.is_load = True
