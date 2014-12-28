@@ -34,4 +34,8 @@ AMOUNT = "amount"
 # fund
 TABLE_FUND = "fund"
 
+# grade
+TABLE_GRADE = "grade"
+GRADE = "grade"
+
 
