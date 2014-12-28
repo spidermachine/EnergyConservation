@@ -36,23 +36,25 @@ class ShareData(HBaseData):
     """
 
     """
-    def __init__(self, code, name, percentage, amount, fund):
+    def __init__(self, code, name, percentage, amount, fund, url):
         self.code = code
         self.name = name
         self.percentage = percentage
         self.amount = amount
         self.fund = fund
+        self.share_url = url
 
     def table(self):
         return tables.TABLE_SHARE
 
     def row(self):
-        return tables.ROW_ID.format(self.fund, int(round(time.time() * 1000)))
+        return tables.ROW_ID.format(self.fund, self.code)
 
     def columns(self):
         return {tables.COLUMN_FAMILY: {tables.CODE: self.code, tables.NAME: self.name,
                                        tables.PERCENTAGE: self.percentage,
-                                       tables.AMOUNT: self.amount}}
+                                       tables.AMOUNT: self.amount,
+                                       tables.URL: self.share_url}}
 
 
 class ShareTableParser(TableParser):
@@ -68,4 +70,8 @@ class ShareTableParser(TableParser):
 
     def parse_item(self, tds):
 
-        return ShareData(tds[1].string, tds[2].string, tds[6].string, tds[7].string, self.generator.extra['fund'])
+        url = tds[1].find("a")['href']
+
+        return ShareData(tds[1].string, tds[2].string, tds[6].string,
+                         tds[7].string, self.generator.extra['fund'],
+                         url)

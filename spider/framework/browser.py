@@ -3,7 +3,7 @@
 #
 __author__ = 'cping.ju'
 
-import sys
+import sys, time
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -67,6 +67,9 @@ class NextPageDataGenerator(JSDataGenerator):
     def load_next_page(self):
 
         self.is_load = False
+
+        sleep = self.extra.get('sleep', 3)
+        time.sleep(sleep)
 
         web_elements = self.browser.webframe.findAllElements(self.extra['tag'])
         for element in web_elements:

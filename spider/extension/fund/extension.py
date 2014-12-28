@@ -8,6 +8,7 @@ __author__ = 'cping.ju'
 from spider.extension.generators import TableParser, TableBodyDataGenerator, TableDataGenerator
 from spider.extension.share.extension import ShareTableParser
 from spider.framework.storage import HBaseData
+from spider.framework.browser import NextPageDataGenerator
 from spider.extension import tags
 from public.utils import tables
 
@@ -32,6 +33,7 @@ class FundData(HBaseData):
         self.code = code.strip()
         self.name = name.strip()
         self.url = url.strip()
+        self.visited = 0
 
     def row(self):
 
@@ -44,7 +46,8 @@ class FundData(HBaseData):
 
         return {tables.COLUMN_FAMILY: {tables.CODE: self.code,
                                        tables.NAME: self.name,
-                                       tables.URL: self.url}}
+                                       tables.URL: self.url,
+                                       tables.TABLE_VISITED: self.visited}}
 
 
 class FundParser(TableParser):
@@ -112,12 +115,18 @@ class FundJournalParser(TableParser):
 
     def parse_item(self, tds):
 
-        a = tds[4].find("a")
-        return FundJournalData(a.string, tds[3].string, self.date,
-                               tds[7].string, tds[9].string, tds[10].string)
+        try:
+            a = tds[4].find("a")
+            return FundJournalData(tds[3].string, self.date,
+                                tds[7].string, tds[10].string)
+        except Exception as e:
+            import traceback
+            print traceback.format_exc()
+
+        return None
 
 
-class FundHistoryDataGenerator(TableBodyDataGenerator):
+class FundHistoryDataGenerator(NextPageDataGenerator):
     """
     history price of fund
     """
