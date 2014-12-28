@@ -115,9 +115,15 @@ class FundJournalParser(TableParser):
 
     def parse_item(self, tds):
 
-        a = tds[4].find("a")
-        return FundJournalData(a.string, tds[3].string, self.date,
-                               tds[7].string, tds[9].string, tds[10].string)
+        try:
+            a = tds[4].find("a")
+            return FundJournalData(tds[3].string, self.date,
+                                tds[7].string, tds[10].string)
+        except Exception as e:
+            import traceback
+            print traceback.format_exc()
+
+        return None
 
 
 class FundHistoryDataGenerator(NextPageDataGenerator):
