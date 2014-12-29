@@ -13,8 +13,6 @@ class GradeTestCase(unittest.TestCase):
         self.extra['text'] = u'>'
         self.extra['tag'] = u'a'
 
-
-
     def test_grade(self):
 
         from spider.extension.facade import WorkerFacade
