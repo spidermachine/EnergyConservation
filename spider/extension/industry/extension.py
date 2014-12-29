@@ -14,7 +14,7 @@ class Industry(TableBodyDataGenerator):
 
     def __init__(self, extra):
         super(Industry, self).__init__(extra)
-        self.class_ = "tab1"
+        # self.class_ = "tab1"
 
 
 class IndustryData(HBaseData):

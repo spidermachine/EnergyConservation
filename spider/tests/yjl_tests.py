@@ -16,6 +16,7 @@ class YJLTestCase(unittest.TestCase):
         self.extra['tag'] = "a"
         self.extra['text'] = u"下一页"
         self.extra['continue'] = True
+        self.extra['class'] = 'table01'
 
     def test_worker(self):
         from spider.extension.facade import WorkerFacade

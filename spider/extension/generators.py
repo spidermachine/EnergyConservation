@@ -11,19 +11,21 @@ from . import tags
 from bs4 import BeautifulSoup
 
 
-
 class TableDataGenerator(NextPageDataGenerator):
 
     def __init__(self, extra):
         super(TableDataGenerator, self).__init__(extra)
-        self.class_ = ""
 
     def data(self):
 
         is_loop, data = super(TableDataGenerator, self).data()
         if data:
             soup = BeautifulSoup(data, from_encoding='uft-8')
-            data = soup.find(tags.table, class_=self.class_)
+            if self.extra.get("id", None):
+                data = soup.find(tags.table, id=self.extra['id'])
+            elif self.extra.get("class", None):
+                data = soup.find(tags.table, class_=self.extra['class'])
+
             data = str(data)
         return is_loop, data
 
@@ -38,7 +40,6 @@ class TableBodyDataGenerator(TableDataGenerator):
         is_loop, data = super(TableBodyDataGenerator, self).data()
         if data:
             soup = BeautifulSoup(data, from_encoding='uft-8')
-            data = soup.find(tags.table, class_=self.class_)
             data = str(data.find(tags.tbody))
         return is_loop, data
 
