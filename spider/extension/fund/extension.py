@@ -24,7 +24,7 @@ class FundBodyDataGenerator(TableBodyDataGenerator):
 
         super(FundBodyDataGenerator, self).__init__(extra)
 
-        self.class_ = "dbtable"
+        # self.class_ = "dbtable"
 
 
 class FundData(HBaseData):

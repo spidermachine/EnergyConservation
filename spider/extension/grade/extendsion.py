@@ -19,7 +19,7 @@ class GradeDataGenerator(TableBodyDataGenerator):
     def __init__(self, extra):
 
         super(GradeDataGenerator, self).__init__(extra)
-        self.class_ = "ctl00_cphMain_gridResult"
+        # self.class_ = "ctl00_cphMain_gridResult"
 
 
 class GradeData(HBaseData):
@@ -51,7 +51,7 @@ class GradeDataParser(TableParser):
             item = self.parse_item(tds)
             if item:
                 # stop load data
-                if item.score == 0 and generator != None:
+                if item.score == 0 and (generator is not None):
                     generator.extra['continue'] = False
                     break
                 items.append(item)

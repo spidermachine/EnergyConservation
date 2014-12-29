@@ -12,8 +12,7 @@ class GradeTestCase(unittest.TestCase):
         self.extra['continue'] = True
         self.extra['text'] = u'>'
         self.extra['tag'] = u'a'
-
-
+        self.extra['id'] = 'ctl00_cphMain_gridResult'
 
     def test_grade(self):
 

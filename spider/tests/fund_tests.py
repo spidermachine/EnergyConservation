@@ -11,6 +11,7 @@ class FundTestCase(unittest.TestCase):
         self.extra['url'] = "http://fund.eastmoney.com/fund.html"
         self.extra['timeout'] = "600"
         self.extra['continue'] = False
+        self.extra['class'] = 'dbtable'
         # self.extra['show'] = True
 
     def test_worker(self):
