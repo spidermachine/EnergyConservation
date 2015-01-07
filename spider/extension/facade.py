@@ -6,6 +6,7 @@ __author__ = 'cping.ju'
 from spider.framework.storage import HBaseStorage
 from spider.framework.workers import BasicWorker
 
+from spider.extension.stock.extension import StockDataGenerator, StockTableParser
 from spider.extension.grade.extendsion import GradeDataGenerator, GradeDataParser
 from spider.extension.yjl.extension import YJLBodyDataGenerator, YJLParser
 from spider.extension.industry.extension import Industry, IndustryParser
@@ -86,4 +87,11 @@ class WorkerFacade(object):
         parser = GradeDataParser()
         WorkerFacade.worker(data_generator, parser)
 
-
+    @staticmethod
+    def process_stock(extra):
+        """
+        grade
+        """
+        data_generator = StockDataGenerator(extra)
+        parser = StockTableParser()
+        WorkerFacade.worker(data_generator, parser)
