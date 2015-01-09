@@ -14,9 +14,11 @@ class StockTestCase(unittest.TestCase):
         self.extra['continue'] = True
         self.extra['tag'] = "a"
         self.extra['text'] = u"下一页"
+        self.extra['more_text'] = u"更多"
         self.extra['timeout'] = 600
         self.extra['query'] = "#query=hy"
-        self.extra['class'] = "stock-info-table"
+        self.extra['class'] = "stocks-info-table"
+        self.extra['show'] = True
 
 
     def test_stock(self):

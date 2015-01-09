@@ -6,4 +6,4 @@ __author__ = 'cping.ju'
 import datetime
 
 def current_date():
-    return datetime.datetime().strftime("%Y-%m-%d")
+    return datetime.datetime.now().strftime("%Y-%m-%d")

@@ -3,30 +3,38 @@
 #
 __author__ = 'cping.ju'
 
-from spider.extension.generators import TableDataGenerator, TableParser
+from spider.extension.generators import TableBodyDataGenerator, TableParser
 from spider.framework.storage import HBaseData
 from public.utils import tables, tools
 
+import time
 
-class StockDataGenerator(TableDataGenerator):
+from spynner.browser import SpynnerTimeout
+
+class StockDataGenerator(TableBodyDataGenerator):
     def __init__(self, extra):
 
         super(StockDataGenerator, self).__init__(extra)
-        self.load_header()
         self.children = []
-
+        self.load_header()
 
     def load_header(self):
-
+        """
+        click the button named "more", load all of industry
+        """
         web_elements = self.browser.webframe.findAllElements(self.extra['tag'])
         is_load_header = False
         for element in web_elements:
             # found the next page
-            if str(element.toInnerXml()).strip() == self.extra['text'] and self.extra['query'] in element.attribute(
-                    "href"):
+            if str(element.toInnerXml()).strip() == self.extra['more_text'] and\
+                            self.extra['query'] in element.attribute("href"):
                 # trigger the link and load the next page
-                element.evaluateJavaScript("this.onclick()")
-                self.browser.wait_load(timeout=self.extra['timeout'])
+                # element.evaluateJavaScript("this.click()")
+                try:
+                    self.browser.wk_click_element(element, wait_load=True, timeout=10)
+                except SpynnerTimeout as e:
+                    print e
+                # self.browser.wait_load(timeout=self.extra['timeout'])
                 is_load_header = True
                 break
 
@@ -39,13 +47,33 @@ class StockDataGenerator(TableDataGenerator):
 
     def load_next_page(self):
 
-        super(StockDataGenerator, self).load_next_page()
+        # super(StockDataGenerator, self).load_next_page()
+
+        self.is_load = False
+        # sleep 3 seconds, if no command
+        sleep = self.extra.get('sleep', 3)
+        time.sleep(sleep)
+
+        # find link of next page
+        hsRank = self.browser.webframe.findFirstElement("div[id='hsRank']")
+        element = hsRank.findFirst("a[class='pages_flip']")
+        if element and (str(element.toInnerXml()).strip() == self.extra['text']):
+            try:
+                self.browser.wk_click_element(element, wait_load=True, timeout=10)
+            except SpynnerTimeout as e:
+                print e
+            self.is_load = True
+
 
         if not self.is_load:
             if len(self.children) > 0:
                 element = self.children.pop(0)
-                element.evaluateJavaScript("this.onclick()")
-                self.browser.wait_load(timeout=self.extra['timeout'])
+                # element.evaluateJavaScript("this.click()")
+                # self.browser.wait_load(timeout=self.extra['timeout'])
+                try:
+                    self.browser.wk_click_element(element, wait_load=True, timeout=10)
+                except SpynnerTimeout as e:
+                    print e
                 self.is_load = True
 
 

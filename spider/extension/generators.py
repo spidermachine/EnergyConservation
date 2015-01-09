@@ -40,7 +40,7 @@ class TableBodyDataGenerator(TableDataGenerator):
         is_loop, data = super(TableBodyDataGenerator, self).data()
         if data:
             soup = BeautifulSoup(data, from_encoding='uft-8')
-            data = str(data.find(tags.tbody))
+            data = str(soup.find(tags.tbody))
         return is_loop, data
 
 

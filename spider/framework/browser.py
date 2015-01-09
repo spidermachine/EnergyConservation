@@ -79,7 +79,8 @@ class NextPageDataGenerator(JSDataGenerator):
             # found the next page
             if str(element.toInnerXml()).strip() == self.extra['text']:
                 # trigger the link and load the next page
-                element.evaluateJavaScript("this.onclick()")
-                self.browser.wait_load(timeout=self.extra['timeout'])
+                # element.evaluateJavaScript("this.onclick()")
+                # self.browser.wait_load(timeout=self.extra['timeout'])
+                self.browser.wk_click_element(element, wait_load=False, timeout= self.extra['timeout'])
                 self.is_load = True
                 break
