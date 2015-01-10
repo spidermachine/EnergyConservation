@@ -7,11 +7,11 @@ from public.utils import tables
 from spider.framework.storage import HBaseData
 from spider.extension.generators import TableBodyDataGenerator, TableParser
 
-class YJLBodyDataGenerator(TableBodyDataGenerator):
-
-    def __init__(self, extra):
-        super(YJLBodyDataGenerator, self).__init__(extra)
-        # self.class_ = "table01"
+# class YJLBodyDataGenerator(TableBodyDataGenerator):
+#
+#     def __init__(self, extra):
+#         super(YJLBodyDataGenerator, self).__init__(extra)
+#         # self.class_ = "table01"
 
 
 class YJLData(HBaseData):

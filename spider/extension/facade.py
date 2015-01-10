@@ -6,12 +6,13 @@ __author__ = 'cping.ju'
 from spider.framework.storage import HBaseStorage
 from spider.framework.workers import BasicWorker
 
+from spider.extension.generators import TableBodyDataGenerator
 from spider.extension.stock.extension import StockDataGenerator, StockTableParser
-from spider.extension.grade.extendsion import GradeDataGenerator, GradeDataParser
-from spider.extension.yjl.extension import YJLBodyDataGenerator, YJLParser
-from spider.extension.industry.extension import Industry, IndustryParser
+from spider.extension.grade.extendsion import GradeDataParser
+from spider.extension.yjl.extension import YJLParser
+from spider.extension.industry.extension import IndustryParser
 from spider.extension.share.extension import ShareTableParser, ShareDataGenerator
-from spider.extension.fund.extension import FundBodyDataGenerator, FundHistoryDataGenerator, FundJournalGenerator, \
+from spider.extension.fund.extension import FundHistoryDataGenerator, FundJournalGenerator, \
     FundHistoryParser, FundJournalParser, FundParser
 
 class WorkerFacade(object):
@@ -29,7 +30,7 @@ class WorkerFacade(object):
         """
         yjl worker
         """
-        data_generator = YJLBodyDataGenerator(extra)
+        data_generator = TableBodyDataGenerator(extra)
         parser = YJLParser()
         WorkerFacade.worker(data_generator, parser)
 
@@ -38,7 +39,7 @@ class WorkerFacade(object):
         """
         industry money flow
         """
-        data_generator = Industry(extra)
+        data_generator = TableBodyDataGenerator(extra)
         parser = IndustryParser()
         WorkerFacade.worker(data_generator, parser)
 
@@ -56,7 +57,7 @@ class WorkerFacade(object):
         """
         fund list
         """
-        data_generator = FundBodyDataGenerator(extra)
+        data_generator = TableBodyDataGenerator(extra)
         parser = FundParser()
         WorkerFacade.worker(data_generator, parser)
 
@@ -83,7 +84,7 @@ class WorkerFacade(object):
         """
         grade
         """
-        data_generator = GradeDataGenerator(extra)
+        data_generator = TableBodyDataGenerator(extra)
         parser = GradeDataParser()
         WorkerFacade.worker(data_generator, parser)
 

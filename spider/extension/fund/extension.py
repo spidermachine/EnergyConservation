@@ -16,15 +16,15 @@ from public.utils import tables
 from bs4 import BeautifulSoup
 
 
-class FundBodyDataGenerator(TableBodyDataGenerator):
-    """
-    fund list
-    """
-    def __init__(self, extra):
-
-        super(FundBodyDataGenerator, self).__init__(extra)
-
-        # self.class_ = "dbtable"
+# class FundBodyDataGenerator(TableBodyDataGenerator):
+#     """
+#     fund list
+#     """
+#     def __init__(self, extra):
+#
+#         super(FundBodyDataGenerator, self).__init__(extra)
+#
+#         # self.class_ = "dbtable"
 
 
 class FundData(HBaseData):

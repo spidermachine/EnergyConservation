@@ -8,13 +8,13 @@ from spider.framework.storage import HBaseData
 from spider.extension.generators import TableBodyDataGenerator, TableParser
 
 from public.utils import tables, tools
-
-class Industry(TableBodyDataGenerator):
-
-
-    def __init__(self, extra):
-        super(Industry, self).__init__(extra)
-        # self.class_ = "tab1"
+#
+# class Industry(TableBodyDataGenerator):
+#
+#
+#     def __init__(self, extra):
+#         super(Industry, self).__init__(extra)
+#         # self.class_ = "tab1"
 
 
 class IndustryData(HBaseData):

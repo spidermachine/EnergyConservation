@@ -13,13 +13,13 @@ from bs4 import BeautifulSoup
 
 import re
 
-
-class GradeDataGenerator(TableBodyDataGenerator):
-
-    def __init__(self, extra):
-
-        super(GradeDataGenerator, self).__init__(extra)
-        # self.class_ = "ctl00_cphMain_gridResult"
+#
+# class GradeDataGenerator(TableBodyDataGenerator):
+#
+#     def __init__(self, extra):
+#
+#         super(GradeDataGenerator, self).__init__(extra)
+#         # self.class_ = "ctl00_cphMain_gridResult"
 
 
 class GradeData(HBaseData):
