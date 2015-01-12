@@ -2,7 +2,7 @@
 # vim: set fileencoding=utf8 :
 #
 from __future__ import absolute_import
-__author__ = 'cping.ju'
+__author__ = 'keping.chu'
 
 
 import os

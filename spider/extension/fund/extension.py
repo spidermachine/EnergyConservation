@@ -2,7 +2,7 @@
 # vim: set fileencoding=utf8 :
 #
 
-__author__ = 'cping.ju'
+__author__ = 'keping.chu'
 
 
 from spider.extension.generators import TableParser, TableBodyDataGenerator, TableDataGenerator
@@ -33,7 +33,7 @@ class FundData(HBaseData):
         self.code = code.strip()
         self.name = name.strip()
         self.url = url.strip()
-        self.visited = 0
+        self.visited = 'unvisited'
 
     def row(self):
 

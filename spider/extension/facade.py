@@ -1,9 +1,9 @@
 # !/usr/bin/python
 # vim: set fileencoding=utf8 :
 #
-__author__ = 'cping.ju'
+__author__ = 'keping.chu'
 
-from spider.framework.storage import HBaseStorage
+from spider.extension.hbase import ThriftHBaseStorage
 from spider.framework.workers import BasicWorker
 
 from spider.extension.generators import TableBodyDataGenerator
@@ -15,6 +15,8 @@ from spider.extension.share.extension import ShareTableParser, ShareDataGenerato
 from spider.extension.fund.extension import FundHistoryDataGenerator, FundJournalGenerator, \
     FundHistoryParser, FundJournalParser, FundParser
 
+from public.utils import tables
+
 class WorkerFacade(object):
 
     @staticmethod
@@ -22,8 +24,8 @@ class WorkerFacade(object):
         """
         basic worker
         """
-        storage = HBaseStorage()
-        BasicWorker(generator, storage, parser).process()
+
+        BasicWorker(generator, ThriftHBaseStorage.INSTANCE, parser).process()
 
     @staticmethod
     def process_yjl(extra):
@@ -48,9 +50,22 @@ class WorkerFacade(object):
         """
         share holds
         """
-        data_generator = ShareDataGenerator(extra)
-        parser = ShareTableParser()
-        WorkerFacade.worker(data_generator, parser)
+        columns = ["{0}:{1}".format(tables.COLUMN_FAMILY, tables.CODE),
+                   "{0}:{1}".format(tables.COLUMN_FAMILY, tables.URL)]
+
+        rows = ThriftHBaseStorage.INSTANCE.fetch(tables.TABLE_FUND, tables.TABLE_VISITED, ShareDataGenerator.VISITED, '=', columns)
+
+        if not rows:
+            ShareDataGenerator.VISITED = "visited"
+            rows = ThriftHBaseStorage.INSTANCE.fetch(tables.TABLE_FUND, tables.TABLE_VISITED, ShareDataGenerator.VISITED, '=', columns)
+
+        if rows:
+            extra['fund'] = rows[0].columns.get(columns[0]).value
+            extra['fund_url'] = rows[0].columns.get(columns[1]).value
+            data_generator = ShareDataGenerator(extra)
+            parser = ShareTableParser()
+            WorkerFacade.worker(data_generator, parser)
+            ThriftHBaseStorage.INSTANCE.update(tables.TABLE_FUND, rows[0].row)
 
     @staticmethod
     def process_fund_list(extra):

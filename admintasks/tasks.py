@@ -1,11 +1,11 @@
 # !/usr/bin/python
 # vim: set fileencoding=utf8 :
 #
-__author__ = 'cping.ju'
+__author__ = 'keping.chu'
 
 from taskmanagement.celery import app
 from spider.extension.facade import WorkerFacade
-
+from public.utils import tables
 
 @app.task()
 def yjl_task(extra):
@@ -13,7 +13,7 @@ def yjl_task(extra):
     WorkerFacade.process_yjl(extra)
 
 
-@app.task()
+@app.task(bind=True)
 def industry_task(extra):
 
     WorkerFacade.process_industry(extra)
@@ -22,8 +22,9 @@ def industry_task(extra):
 def fund_list_task(extra):
     WorkerFacade.process_fund_list(extra)
 
-@app.task()
+@app.task(bind=True)
 def fund_share_task(extra):
+
     WorkerFacade.process_share(extra)
 
 @app.task()
