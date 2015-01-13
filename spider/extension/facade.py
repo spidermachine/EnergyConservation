@@ -13,7 +13,7 @@ from spider.extension.yjl.extension import YJLParser
 from spider.extension.industry.extension import IndustryParser
 from spider.extension.share.extension import ShareTableParser, ShareDataGenerator
 from spider.extension.fund.extension import FundHistoryDataGenerator, FundJournalGenerator, \
-    FundHistoryParser, FundJournalParser, FundParser
+    FundHistoryParser, FundJournalParser, FundParser, FundBodyDataGenerator
 
 from public.utils import tables
 
@@ -72,7 +72,7 @@ class WorkerFacade(object):
         """
         fund list
         """
-        data_generator = TableBodyDataGenerator(extra)
+        data_generator = FundBodyDataGenerator(extra)
         parser = FundParser()
         WorkerFacade.worker(data_generator, parser)
 

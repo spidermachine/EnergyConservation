@@ -26,6 +26,79 @@ from bs4 import BeautifulSoup
 #
 #         # self.class_ = "dbtable"
 
+class FundBodyDataGenerator(TableBodyDataGenerator):
+
+    def __init__(self, extra):
+
+        super(FundBodyDataGenerator, self).__init__(extra)
+        self.load_header()
+
+    def load_header(self):
+        """
+        click the button named "more", load all of industry
+        """
+        web_elements = self.browser.webframe.findAllElements(self.extra['tag'])
+        is_load_header = False
+        for element in web_elements:
+            # found the next page
+            if str(element.toInnerXml()).strip() == self.extra['header_text'] and\
+                            self.extra['query'] in element.attribute("href"):
+                # trigger the link and load the next page
+                # element.evaluateJavaScript("this.click()")
+                try:
+                    self.browser.wk_click_element(element, wait_load=True, timeout=self.extra['timeout'])
+                except SpynnerTimeout as e:
+                    print e
+                # self.browser.wait_load(timeout=self.extra['timeout'])
+                is_load_header = True
+                break
+
+        if is_load_header:
+
+            element = self.browser.webframe.findFirstElement("div[id='fnRanks']")
+
+            if element:
+                element = element.findFirst("ul[class='mod-title-bar']")
+                for ae in element.findAll("a"):
+                    if str(element.toInnerXml()).strip() == self.extra['sub_domain']:
+                        self.browser.wk_click_element(ae, wait_load=True, timeout=self.extra['timeout'])
+                        self.is_load = True
+
+
+    def load_next_page(self):
+
+        # super(StockDataGenerator, self).load_next_page()
+
+        self.is_load = False
+        # sleep 3 seconds, if no command
+        sleep = self.extra.get('sleep', 3)
+        time.sleep(sleep)
+
+        # find link of next page
+        hsRank = self.browser.webframe.findFirstElement("div[id='hsRank']")
+        element = hsRank.findFirst("a[class='pages_flip']")
+        if element and (str(element.toInnerXml()).strip() == self.extra['text']):
+            try:
+                self.browser.wk_click_element(element, wait_load=True, timeout=10)
+            except SpynnerTimeout as e:
+                print e
+            self.is_load = True
+
+    def data(self):
+        is_loop, data = super(TableDataGenerator, self).data()
+        if data:
+            soup = BeautifulSoup(data, from_encoding='uft-8')
+            soup = soup.find("div[id='fnRanks']")
+            data = soup.find("table[_quotedata_query_='STYPE:FDO;TYPE3:GPX']")
+            # if self.extra.get("id", None):
+            #     data = soup.find(tags.table, id=self.extra['id'])
+            # elif self.extra.get("class", None):
+            #     data = soup.find(tags.table, class_=self.extra['class'])
+            data = str(data.find(tags.tbody))
+            data = str(data)
+        return is_loop, data
+
+
 
 class FundData(HBaseData):
 
@@ -54,8 +127,8 @@ class FundParser(TableParser):
 
     def parse_item(self, tds):
         try:
-            a = tds[4].find("a")
-            return FundData(tds[3].string, a.string, a["href"])
+            a = tds[2].find("a")
+            return FundData(tds[3].find("a").string, a.string, a["href"])
         except Exception as e:
             print e
             return None
