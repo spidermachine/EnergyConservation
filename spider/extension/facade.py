@@ -25,7 +25,7 @@ class WorkerFacade(object):
         basic worker
         """
 
-        BasicWorker(generator, ThriftHBaseStorage.INSTANCE, parser).process()
+        BasicWorker(generator, ThriftHBaseStorage.get_instance(), parser).process()
 
     @staticmethod
     def process_yjl(extra):
@@ -53,11 +53,11 @@ class WorkerFacade(object):
         columns = ["{0}:{1}".format(tables.COLUMN_FAMILY, tables.CODE),
                    "{0}:{1}".format(tables.COLUMN_FAMILY, tables.URL)]
 
-        rows = ThriftHBaseStorage.INSTANCE.fetch(tables.TABLE_FUND, tables.TABLE_VISITED, ShareDataGenerator.VISITED, '=', columns)
+        rows = ThriftHBaseStorage.get_instance().fetch(tables.TABLE_FUND, tables.TABLE_VISITED, ShareDataGenerator.VISITED, '=', columns)
 
         if not rows:
             ShareDataGenerator.VISITED = "visited"
-            rows = ThriftHBaseStorage.INSTANCE.fetch(tables.TABLE_FUND, tables.TABLE_VISITED, ShareDataGenerator.VISITED, '=', columns)
+            rows = ThriftHBaseStorage.get_instance().fetch(tables.TABLE_FUND, tables.TABLE_VISITED, ShareDataGenerator.VISITED, '=', columns)
 
         if rows:
             extra['fund'] = rows[0].columns.get(columns[0]).value
@@ -65,7 +65,7 @@ class WorkerFacade(object):
             data_generator = ShareDataGenerator(extra)
             parser = ShareTableParser()
             WorkerFacade.worker(data_generator, parser)
-            ThriftHBaseStorage.INSTANCE.update(tables.TABLE_FUND, rows[0].row)
+            ThriftHBaseStorage.get_instance().update(tables.TABLE_FUND, rows[0].row, {'visited': "unvisited" if ShareDataGenerator.VISITED == "visited" else "visited"})
 
     @staticmethod
     def process_fund_list(extra):

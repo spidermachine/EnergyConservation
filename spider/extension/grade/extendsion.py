@@ -38,7 +38,7 @@ class GradeData(HBaseData):
 
     def columns(self):
 
-        return {tables.COLUMN_FAMILY: {tables.CODE: self.code, tables.GRADE: self.score}}
+        return {tables.COLUMN_FAMILY: {tables.CODE: self.code, tables.GRADE: self.score, tables.RET: self.ret}}
 
 
 class GradeDataParser(TableParser):

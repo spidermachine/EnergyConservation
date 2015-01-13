@@ -38,6 +38,7 @@ TABLE_VISITED = "visited"
 # grade
 TABLE_GRADE = "grade"
 GRADE = "grade"
+RET = "ret"
 
 # stock
 TABLE_STOCK = "stock"

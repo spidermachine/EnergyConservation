@@ -69,7 +69,7 @@ class ThriftHBaseStorage(Storage):
             ThriftHBaseStorage.INSTANCE = ThriftHBaseStorage()
         return ThriftHBaseStorage.INSTANCE
 
-    def __init__(self, host='127.0.0.1', port='9050'):
+    def __init__(self, host='127.0.0.1', port='9090'):
 
         if not hasattr(self, "transport"):
             self.host = host
@@ -87,16 +87,18 @@ class ThriftHBaseStorage(Storage):
     def save(self, data):
         columns = data.columns()[tables.COLUMN_FAMILY]
         self.update(data.table(), data.row(), columns)
-        # mutations = [Hbase.Mutation(column="{0}:{1}".format(tables.COLUMN_FAMILY, k), value=v.strip()) for k, v in columns]
-        # self.client.mutateRow(data.table(), data.row(), mutations)
 
     def batch_save(self, data):
         mutations = []
         for item in data:
             columns = item.columns()[tables.COLUMN_FAMILY]
+            sub_mutations = []
+            for k, v in columns.items():
+                sub_mutations.append(Hbase.Mutation(column="{0}:{1}".format(tables.COLUMN_FAMILY, k), value=v.strip()))
+
             mutations.append(Hbase.BatchMutation(row=item.row(),
-                                                 mutations=[Hbase.Mutation(column="{0}:{1}".format(tables.COLUMN_FAMILY, k), value=v.strip()) for k, v in columns]))
-        self.client.mutateRows(data[0].table(), mutations)
+                                                 mutations=sub_mutations))
+        self.client.mutateRows(data[0].table(), mutations, None)
 
     def __delete__(self, instance):
         
@@ -115,5 +117,5 @@ class ThriftHBaseStorage(Storage):
     def update(self, table, row, attributes={}):
 
         columns = attributes
-        mutations = [Hbase.Mutation(column="{0}:{1}".format(tables.COLUMN_FAMILY, k), value=v.strip()) for k, v in columns]
+        mutations = [Hbase.Mutation(column="{0}:{1}".format(tables.COLUMN_FAMILY, k), value=v.strip()) for k, v in columns.items()]
         self.client.mutateRow(table, row, mutations)

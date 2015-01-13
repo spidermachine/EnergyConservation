@@ -10,9 +10,10 @@ class GradeTestCase(unittest.TestCase):
         self.extra['url'] = 'http://cn.morningstar.com/quickrank/default.aspx'
         self.extra['timeout'] = 600
         self.extra['continue'] = True
-        self.extra['text'] = u'>'
+        self.extra['text'] = u'&gt;'
         self.extra['tag'] = u'a'
         self.extra['id'] = 'ctl00_cphMain_gridResult'
+        self.extra['show'] = True
 
     def test_grade(self):
 
