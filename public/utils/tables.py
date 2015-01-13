@@ -33,6 +33,7 @@ AMOUNT = "amount"
 
 # fund
 TABLE_FUND = "fund"
+INC_RATE = "inc_rate"
 TABLE_VISITED = "visited"
 
 # grade

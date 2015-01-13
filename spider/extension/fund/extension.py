@@ -12,9 +12,10 @@ from spider.framework.browser import NextPageDataGenerator
 from spider.extension import tags
 from public.utils import tables
 
-
+import time
 from bs4 import BeautifulSoup
 
+from spynner.browser import SpynnerTimeout
 
 # class FundBodyDataGenerator(TableBodyDataGenerator):
 #     """
@@ -60,10 +61,14 @@ class FundBodyDataGenerator(TableBodyDataGenerator):
             if element:
                 element = element.findFirst("ul[class='mod-title-bar']")
                 for ae in element.findAll("a"):
-                    if str(element.toInnerXml()).strip() == self.extra['sub_domain']:
-                        self.browser.wk_click_element(ae, wait_load=True, timeout=self.extra['timeout'])
+                    # print str(element.toInnerXml()).strip()
+                    if str(ae.toInnerXml()).strip() == self.extra['sub_domain']:
+                        try:
+                            self.browser.wk_click_element(ae, wait_load=True, timeout=self.extra['timeout'])
+                        except SpynnerTimeout as e:
+                            print e
                         self.is_load = True
-
+                        break
 
     def load_next_page(self):
 
@@ -75,8 +80,8 @@ class FundBodyDataGenerator(TableBodyDataGenerator):
         time.sleep(sleep)
 
         # find link of next page
-        hsRank = self.browser.webframe.findFirstElement("div[id='hsRank']")
-        element = hsRank.findFirst("a[class='pages_flip']")
+        hsRank = self.browser.webframe.findFirstElement("div[id='fnRanks']")
+        element = hsRank.findAll("a[class='pages_flip']").last()
         if element and (str(element.toInnerXml()).strip() == self.extra['text']):
             try:
                 self.browser.wk_click_element(element, wait_load=True, timeout=10)
@@ -88,8 +93,8 @@ class FundBodyDataGenerator(TableBodyDataGenerator):
         is_loop, data = super(TableDataGenerator, self).data()
         if data:
             soup = BeautifulSoup(data, from_encoding='uft-8')
-            soup = soup.find("div[id='fnRanks']")
-            data = soup.find("table[_quotedata_query_='STYPE:FDO;TYPE3:GPX']")
+            soup = soup.find("div", id='fnRanks')
+            data = soup.find("table", _quotedata_query_='STYPE:FDO;TYPE3:GPX')
             # if self.extra.get("id", None):
             #     data = soup.find(tags.table, id=self.extra['id'])
             # elif self.extra.get("class", None):
@@ -102,10 +107,13 @@ class FundBodyDataGenerator(TableBodyDataGenerator):
 
 class FundData(HBaseData):
 
-    def __init__(self, code, name, url):
+    def __init__(self, code, name, url, amount, price, inc_rate):
         self.code = code.strip()
         self.name = name.strip()
         self.url = url.strip()
+        self.amount = amount
+        self.price = price
+        self.inc_rate = inc_rate
         self.visited = 'unvisited'
 
     def row(self):
@@ -120,6 +128,9 @@ class FundData(HBaseData):
         return {tables.COLUMN_FAMILY: {tables.CODE: self.code,
                                        tables.NAME: self.name,
                                        tables.URL: self.url,
+                                       tables.AMOUNT: self.amount,
+                                       tables.PRICE: self.price,
+                                       tables.INC_RATE:self.inc_rate,
                                        tables.TABLE_VISITED: self.visited}}
 
 
@@ -128,7 +139,7 @@ class FundParser(TableParser):
     def parse_item(self, tds):
         try:
             a = tds[2].find("a")
-            return FundData(tds[3].find("a").string, a.string, a["href"])
+            return FundData(tds[3].find("a").string, a.string, a["href"], tds[8].string, tds[4].string, tds[5].string)
         except Exception as e:
             print e
             return None
