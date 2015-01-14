@@ -4,7 +4,7 @@
 __author__ = 'keping.chu'
 
 
-from spider.extension.generators import TableBodyDataGenerator, TableParser
+from spider.extension.generators import TableParser
 from spider.framework.storage import HBaseData
 from spider.extension import tags
 from public.utils import tables
@@ -12,14 +12,6 @@ from public.utils import tables
 from bs4 import BeautifulSoup
 
 import re
-
-#
-# class GradeDataGenerator(TableBodyDataGenerator):
-#
-#     def __init__(self, extra):
-#
-#         super(GradeDataGenerator, self).__init__(extra)
-#         # self.class_ = "ctl00_cphMain_gridResult"
 
 
 class GradeData(HBaseData):
@@ -59,4 +51,4 @@ class GradeDataParser(TableParser):
 
     def parse_item(self, tds):
 
-        return GradeData(tds[2].find('a').string, re.findall(r'\d+',tds[5].find('img')['src'])[0], tds[10].string)
+        return GradeData(tds[2].find('a').string, re.findall(r'\d+', tds[5].find('img')['src'])[0], tds[10].string)

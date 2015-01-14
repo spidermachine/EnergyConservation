@@ -12,8 +12,7 @@ from spider.extension.grade.extendsion import GradeDataParser
 from spider.extension.yjl.extension import YJLParser
 from spider.extension.industry.extension import IndustryParser
 from spider.extension.share.extension import ShareTableParser, ShareDataGenerator
-from spider.extension.fund.extension import FundHistoryDataGenerator, FundJournalGenerator, \
-    FundHistoryParser, FundJournalParser, FundParser, FundBodyDataGenerator
+from spider.extension.fund.extension import FundRetParser, FundRetGenerator, FundParser, FundBodyDataGenerator
 
 from public.utils import tables
 
@@ -61,7 +60,7 @@ class WorkerFacade(object):
 
         if rows:
             extra['fund'] = rows[0].columns.get(columns[0]).value
-            extra['fund_url'] = rows[0].columns.get(columns[1]).value
+            extra['url'] = rows[0].columns.get(columns[1]).value
             data_generator = ShareDataGenerator(extra)
             parser = ShareTableParser()
             WorkerFacade.worker(data_generator, parser)
@@ -74,24 +73,6 @@ class WorkerFacade(object):
         """
         data_generator = FundBodyDataGenerator(extra)
         parser = FundParser()
-        WorkerFacade.worker(data_generator, parser)
-
-    @staticmethod
-    def process_fund_history(extra):
-        """
-        history price of fund
-        """
-        data_generator = FundHistoryDataGenerator(extra)
-        parser = FundHistoryParser()
-        WorkerFacade.worker(data_generator, parser)
-
-    @staticmethod
-    def process_fund_journal(extra):
-        """
-        lasted fund price
-        """
-        data_generator = FundJournalGenerator(extra)
-        parser = FundJournalParser()
         WorkerFacade.worker(data_generator, parser)
 
     @staticmethod
@@ -110,4 +91,13 @@ class WorkerFacade(object):
         """
         data_generator = StockDataGenerator(extra)
         parser = StockTableParser()
+        WorkerFacade.worker(data_generator, parser)
+
+    @staticmethod
+    def process_fund_return(extra):
+        """
+        return of fund
+        """
+        data_generator = FundRetGenerator(extra)
+        parser = FundRetParser()
         WorkerFacade.worker(data_generator, parser)

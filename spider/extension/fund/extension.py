@@ -6,9 +6,8 @@ __author__ = 'keping.chu'
 
 
 from spider.extension.generators import TableParser, TableBodyDataGenerator, TableDataGenerator
-from spider.extension.share.extension import ShareTableParser
 from spider.framework.storage import HBaseData
-from spider.framework.browser import NextPageDataGenerator
+from spider.framework.browser import DataGenerator
 from spider.extension import tags
 from public.utils import tables
 
@@ -16,16 +15,6 @@ import time
 from bs4 import BeautifulSoup
 
 from spynner.browser import SpynnerTimeout
-
-# class FundBodyDataGenerator(TableBodyDataGenerator):
-#     """
-#     fund list
-#     """
-#     def __init__(self, extra):
-#
-#         super(FundBodyDataGenerator, self).__init__(extra)
-#
-#         # self.class_ = "dbtable"
 
 class FundBodyDataGenerator(TableBodyDataGenerator):
 
@@ -104,7 +93,6 @@ class FundBodyDataGenerator(TableBodyDataGenerator):
         return is_loop, data
 
 
-
 class FundData(HBaseData):
 
     def __init__(self, code, name, url, amount, price, inc_rate):
@@ -145,92 +133,80 @@ class FundParser(TableParser):
             return None
 
 
-
-class FundJournalGenerator(TableDataGenerator):
-
-    def __init__(self, extra):
-
-        super(FundJournalGenerator, self).__init__(extra)
-
-        self.class_ = "dbtable"
-
-
-class FundJournalData(HBaseData):
+class FundRetGenerator(TableBodyDataGenerator):
     """
-    lasted price of fund
-    """
-    def __init__(self, code, date, price, percent):
-
-        # self.name = name.strip()
-        self.code = code.strip()
-        self.date = date.strip()
-        self.price = price.strip()
-        # self.increase = increase.strip()
-        self.percent = percent.strip()
-
-    def row(self):
-
-        return tables.ROW_ID.format(self.code, self.date)
-
-    def table(self):
-
-        return tables.TABLE_FUND_JOURNAL
-
-    def columns(self):
-
-        return {tables.COLUMN_FAMILY: {tables.CODE: self.code, tables.DATE: self.date,
-                                       tables.PRICE: self.price,
-                                       tables.PERCENT: self.percent}}
-
-
-class FundJournalParser(TableParser):
-
-    def __init__(self):
-        self.date = None
-
-    def parse(self, string, generator=None):
-
-        soup = BeautifulSoup(string, from_encoding="utf-8")
-
-        self.date = soup.find(tags.thead).find(tags.tr).find_all(tags.td)[6].string.strip()
-
-        # delete header of table
-        return super(FundJournalParser, self).parse(str(soup.find(tags.tbody)))
-
-    def parse_item(self, tds):
-
-        try:
-            a = tds[4].find("a")
-            return FundJournalData(tds[3].string, self.date,
-                                tds[7].string, tds[10].string)
-        except Exception as e:
-            import traceback
-            print traceback.format_exc()
-
-        return None
-
-
-class FundHistoryDataGenerator(NextPageDataGenerator):
-    """
-    history price of fund
+    return of fund
     """
     def __init__(self, extra):
-        super(FundHistoryDataGenerator, self).__init__(extra)
+        self.extra = extra
+        # super(DataGenerator, self).__init__(extra)
 
     def data(self):
-        is_loop, data = super(FundHistoryDataGenerator, self).data()
+
+        is_loop = False
+        data = self.extra['html']
         if data:
             soup = BeautifulSoup(data, from_encoding='utf-8')
-            div = soup.find("div", id="jztable")
-            # table = div.find("table")
+            div = soup.find("div", class_="fn_fund_achive")
             tbody = div.find("tbody")
             data = str(tbody)
 
         return is_loop, data
 
 
-class FundHistoryParser(ShareTableParser):
+class FundRetData(HBaseData):
+    """
+    :return data of fund
+    """
+    def __init__(self, code, ret_week, ret_month, ret_season, ret_half_year, ret_year):
+
+        self.code = code.strip()
+        self.ret_week = ret_week
+        self.ret_month = ret_month
+        self.ret_season = ret_season
+        self.ret_half_year = ret_half_year
+        self.ret__year = ret_year
+
+
+    def row(self):
+
+        return self.code
+
+    def table(self):
+
+        return tables.TABLE_FUND
+
+    def columns(self):
+
+        return {tables.COLUMN_FAMILY: {tables.CODE: self.code,
+                                       tables.RET_WEEK: self.ret_week,
+                                       tables.RET_MONTH: self.ret_month,
+                                       tables.RET_HALF_YEAR: self.ret_half_year,
+                                       tables.RET_YEAR: self.ret_year}}
+
+
+class FundRetParser(TableParser):
+
+    def parse(self, string, generator=None):
+
+        items = []
+        soup = BeautifulSoup(string, from_encoding="utf-8")
+        tr = soup.find(tags.tr)
+        tds = tr.find_all(tags.td)
+        item = self.parse_item(tds)
+        if item:
+            if generator:
+                item.code = generator.extra['fund']
+            items.append(item)
+
+        return items
 
     def parse_item(self, tds):
-        return FundJournalData(self.generator.extra['code'], tds[0].string,
-                               tds[1].string, tds[3].string)
+
+        return FundRetData("",
+                           tds[1].string,
+                           tds[2].string,
+                           tds[3].string,
+                           tds[4].string,
+                           tds[5].string)
+

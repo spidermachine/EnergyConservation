@@ -35,6 +35,10 @@ AMOUNT = "amount"
 TABLE_FUND = "fund"
 INC_RATE = "inc_rate"
 TABLE_VISITED = "visited"
+RET_WEEK = "ret_week"
+RET_MONTH = "ret_month"
+RET_HALF_YEAR = "ret_half_year"
+RET_YEAR = "ret_year"
 
 # grade
 TABLE_GRADE = "grade"
