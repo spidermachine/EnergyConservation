@@ -10,10 +10,9 @@ class FundShareTestCase(unittest.TestCase):
 
     def setUp(self):
         self.extra = dict()
-        self.extra['url'] = "http://fund.eastmoney.com/f10/ccmx_288002.html"
+        # self.extra['url'] = "http://fund.eastmoney.com/f10/ccmx_288002.html"
         self.extra['timeout'] = 600
-        self.extra['fund'] = '288002'
-
+        # self.extra['fund'] = '288002'
 
     def test_something(self):
         from spider.extension.facade import WorkerFacade

@@ -127,7 +127,7 @@ class FundParser(TableParser):
     def parse_item(self, tds):
         try:
             a = tds[2].find("a")
-            return FundData(tds[3].find("a").string, a.string, a["href"], tds[8].string, tds[4].string, tds[5].string)
+            return FundData(a.string, tds[3].find("a").string, a["href"], tds[8].string, tds[4].string, tds[5].string)
         except Exception as e:
             print e
             return None
