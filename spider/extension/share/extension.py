@@ -11,6 +11,7 @@ from public.utils import tables
 from bs4 import BeautifulSoup
 
 import re
+import copy
 
 
 class ShareDataGenerator(JSDataGenerator):
@@ -23,10 +24,20 @@ class ShareDataGenerator(JSDataGenerator):
 
         is_loop, data = super(ShareDataGenerator, self).data()
         if data:
+            origin_data = data
             soup = BeautifulSoup(data, from_encoding='utf-8')
             div = soup.find("div", class_="fn_fund_invest_item")
             tbody = div.find("tbody")
             data = str(tbody)
+
+            # collection return data with sub tasks
+            try:
+                from admintasks import tasks
+                sub_extra = copy.deepcopy(self.extra)
+                sub_extra['html'] = origin_data
+                tasks.fund_return.apply(sub_extra, delay=2)
+            except Exception as e:
+                print e
 
         return is_loop, data
 

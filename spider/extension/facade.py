@@ -16,6 +16,7 @@ from spider.extension.fund.extension import FundRetParser, FundRetGenerator, Fun
 
 from public.utils import tables
 
+
 class WorkerFacade(object):
 
     @staticmethod

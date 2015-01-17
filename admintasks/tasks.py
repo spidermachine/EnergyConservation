@@ -13,7 +13,7 @@ def yjl_task(extra):
     WorkerFacade.process_yjl(extra)
 
 
-@app.task(bind=True)
+@app.task(bind=True, retry=5)
 def industry_task(extra):
 
     WorkerFacade.process_industry(extra)
@@ -26,10 +26,6 @@ def fund_list_task(extra):
 def fund_share_task(extra):
 
     WorkerFacade.process_share(extra)
-
-@app.task()
-def industry_task(extra):
-    WorkerFacade.process_industry(extra)
 
 @app.task()
 def stock_task(extra):
