@@ -59,3 +59,11 @@ class TableParser(Parser):
 
     def parse_item(self, tds):
         pass
+
+    def parse_tag_a(self, td):
+
+        a = td.find("a")
+        if a:
+            return a.string, a['href']
+
+        return None, None
