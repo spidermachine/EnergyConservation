@@ -18,8 +18,9 @@ URL = "url"
 #industry
 TABLE_INDUSTRY = "industry"
 
-MAJOR = "major"
-FLOW = "flow"
+BALANCE = "balance"
+IN_FLOW = "in_flow"
+OUT_FLOW = "out_flow"
 AMPLITUDE = "amplitude"
 
 # fund_journal
