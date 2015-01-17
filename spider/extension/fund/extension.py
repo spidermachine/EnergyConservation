@@ -16,6 +16,7 @@ from bs4 import BeautifulSoup
 
 from spynner.browser import SpynnerTimeout
 
+
 class FundBodyDataGenerator(TableBodyDataGenerator):
 
     def __init__(self, extra):
