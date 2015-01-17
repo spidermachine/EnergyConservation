@@ -107,9 +107,9 @@ class ThriftHBaseStorage(Storage):
         self.transport.close()
         
     def fetch(self, table, column, value, operation, columns=[], size=1):
-        scan = Hbase.TScan(columns=columns,
-                           filterString="(SingleColumnValueFilter ('{0}', '{1}', {2}, '{3}'))".format(tables.COLUMN_FAMILY, column, operation, value))
-        scannerId = self.client.scannerOpenWithScan(table, scan)
+        filterString = "(SingleColumnValueFilter ('{0}', '{1}', {2}, 'binary:{3}'))".format(tables.COLUMN_FAMILY, column, operation, value)
+        scan = Hbase.TScan(columns=columns, filterString=filterString)
+        scannerId = self.client.scannerOpenWithScan(table, scan, {})
         rows = self.client.scannerGetList(scannerId, size)
         self.client.scannerClose(scannerId)
         return rows
@@ -118,4 +118,4 @@ class ThriftHBaseStorage(Storage):
 
         columns = attributes
         mutations = [Hbase.Mutation(column="{0}:{1}".format(tables.COLUMN_FAMILY, k), value=v.strip()) for k, v in columns.items()]
-        self.client.mutateRow(table, row, mutations)
+        self.client.mutateRow(table, row, mutations, {})

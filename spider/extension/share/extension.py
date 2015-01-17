@@ -17,6 +17,7 @@ class ShareDataGenerator(JSDataGenerator):
     """
     share holds
     """
+    VISITED = "unvisited"
 
     def data(self):
 
@@ -68,7 +69,7 @@ class ShareTableParser(TableParser):
     def parse_item(self, tds):
         a = tds[0].find("a")
         url = a['href']
-        return ShareData(re.findall('\d+', url.split('/')[-1][1:]),
+        return ShareData(re.findall('\d+', url.split('/')[-1][1:])[0],
                          a.string,
                          url,
                          tds[1].string,
