@@ -68,8 +68,8 @@ CATEGORY = "category"
 
 # stock's grade
 TABLE_STOCK_GRADE = "stock_grade"
-BUY_GRADE = ""
-HOLD_GRADE = ""
-NEUTRAL_GRADE = ""
-DEC_GRADE = ""
-SOLD_GRADE = ""
+BUY_GRADE = "buy_grade"
+HOLD_GRADE = "hold_grade"
+NEUTRAL_GRADE = "neutral_grade"
+DEC_GRADE = "dec_grade"
+SOLD_GRADE = "sold_grade"

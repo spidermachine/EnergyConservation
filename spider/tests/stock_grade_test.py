@@ -15,6 +15,8 @@ class StockGradeTestCase(unittest.TestCase):
         self.extra['tag'] = 'a'
         self.extra['text'] = u'下一页'
         self.extra['class'] = 'list_table'
+        self.extra['show'] = True
+        self.extra['continue'] = True
 
     def test_stock_grade(self):
         from spider.extension.facade import WorkerFacade

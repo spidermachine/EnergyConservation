@@ -76,7 +76,7 @@ class NextPageDataGenerator(JSDataGenerator):
         # find link of next page
         web_elements = self.browser.webframe.findAllElements(self.extra['tag'])
         for element in web_elements:
-            print str(element.toInnerXml()).strip()
+            # print str(element.toInnerXml()).strip()
             # found the next page
             if str(element.toInnerXml()).strip() == self.extra['text']:
                 # trigger the link and load the next page
