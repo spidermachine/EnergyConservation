@@ -7,7 +7,7 @@ from spider.extension.hbase import ThriftHBaseStorage
 from spider.framework.workers import BasicWorker
 
 from spider.extension.generators import TableBodyDataGenerator
-from spider.extension.stock.extension import StockDataGenerator, StockTableParser
+from spider.extension.stock.extension import StockDataGenerator, StockTableParser, StockGradeParser, StockGradeData
 from spider.extension.grade.extendsion import GradeDataParser
 from spider.extension.yjl.extension import YJLParser
 from spider.extension.industry.extension import IndustryParser
@@ -101,4 +101,13 @@ class WorkerFacade(object):
         """
         data_generator = FundRetGenerator(extra)
         parser = FundRetParser()
+        WorkerFacade.worker(data_generator, parser)
+
+    @staticmethod
+    def process_stock_grade(extra):
+        """
+        stock's grade
+        """
+        data_generator = TableBodyDataGenerator(extra)
+        parser = StockGradeParser()
         WorkerFacade.worker(data_generator, parser)

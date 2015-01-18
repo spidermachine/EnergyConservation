@@ -49,13 +49,17 @@ class TableParser(Parser):
     def parse(self, string, generator=None):
         items = []
         soup = BeautifulSoup(string, from_encoding="utf-8")
-        for tr in soup.find_all(tags.tr):
+        for tr in self.clean_data(soup.find_all(tags.tr)):
             tds = tr.find_all(tags.td)
             item = self.parse_item(tds)
             if item:
                 items.append(item)
 
         return items
+
+    def clean_data(self, trs):
+
+        return trs
 
     def parse_item(self, tds):
         pass

@@ -66,3 +66,10 @@ NET_INCOME = "net_income"
 MAJOR_INCOME = "major_income"
 CATEGORY = "category"
 
+# stock's grade
+TABLE_STOCK_GRADE = "stock_grade"
+BUY_GRADE = ""
+HOLD_GRADE = ""
+NEUTRAL_GRADE = ""
+DEC_GRADE = ""
+SOLD_GRADE = ""

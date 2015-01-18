@@ -11,6 +11,7 @@ import time
 
 from spynner.browser import SpynnerTimeout
 
+
 class StockDataGenerator(TableBodyDataGenerator):
     def __init__(self, extra):
 
@@ -150,3 +151,56 @@ class StockTableParser(TableParser):
                                 tds[16].string, tds[17].string, tds[18].string,
                                 tds[19].string, tds[20].string, tds[21].string,
                                 tds[22].string, self.generator.extra.get('category', "未知"), a['href'])
+
+
+class StockGradeData(HBaseData):
+
+    def __init__(self, code, url, name, avg_grade, buy_grade, hold_grade, neutral_grade, dec_grade, sold_grade):
+
+        self.code = code
+        self.url = url
+        self.name = name
+        self.avg_grade = avg_grade
+        self.buy_grade = buy_grade
+        self.hold_grade = hold_grade
+        self.neutral_grade = neutral_grade
+        self.dec_grade = dec_grade
+        self.sold_grade = sold_grade
+
+    def row(self):
+
+        return self.code
+
+    def table(self):
+        return tables.TABLE_STOCK_GRADE
+
+    def columns(self):
+
+        return {tables.COLUMN_FAMILY: {
+            tables.CODE: self.code,
+            tables.NAME: self.name,
+            tables.URL: self.url,
+            tables.BUY_GRADE: self.buy_grade,
+            tables.HOLD_GRADE: self.hold_grade,
+            tables.NEUTRAL_GRADE: self.neutral_grade,
+            tables.DEC_GRADE: self.dec_grade,
+            tables.SOLD_GRADE: self.sold_grade
+        }}
+
+
+class StockGradeParser(TableParser):
+
+    def clean_data(self, trs):
+        return trs[1:]
+
+    def parse_item(self, tds):
+
+        code, url = self.parse_tag_a(tds[0])
+        name, temp = self.parse_tag_a(tds[1])
+        return StockGradeData(code, url, name,
+                              tds[2].string,
+                              tds[4].string,
+                              tds[5].string,
+                              tds[6].string,
+                              tds[7].string,
+                              tds[8].string)
