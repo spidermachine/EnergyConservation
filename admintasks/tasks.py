@@ -32,9 +32,13 @@ def stock_task(extra):
     WorkerFacade.process_stock(extra)
 
 @app.task()
-def fund_grade(extra):
+def fund_grade_task(extra):
     WorkerFacade.process_fund_grade(extra)
 
 @app.task()
-def fund_return(extra):
+def fund_return_task(extra):
     WorkerFacade.process_fund_return(extra)
+
+@app.task()
+def stock_grade_task(extra):
+    WorkerFacade.process_stock_grade(extra)

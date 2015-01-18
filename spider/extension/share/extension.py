@@ -35,7 +35,7 @@ class ShareDataGenerator(JSDataGenerator):
                 from admintasks import tasks
                 sub_extra = copy.deepcopy(self.extra)
                 sub_extra['html'] = origin_data
-                tasks.fund_return.apply(sub_extra, delay=2)
+                tasks.fund_return_task.apply(sub_extra, delay=2)
             except Exception as e:
                 print e
 

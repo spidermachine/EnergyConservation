@@ -10,7 +10,7 @@ class IndustryTestCase(unittest.TestCase):
 
     def setUp(self):
         self.extra = dict()
-        self.extra['url'] = 'http://data.eastmoney.com/bkzj/hy.html'
+        self.extra['url'] = 'http://data.10jqka.com.cn/funds/hyzjl'
         self.extra['continue'] = True
         self.extra['tag'] = 'a'
         self.extra['text'] = u'下一页'
