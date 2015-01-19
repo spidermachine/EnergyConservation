@@ -82,6 +82,6 @@ class NextPageDataGenerator(JSDataGenerator):
                 # trigger the link and load the next page
                 # element.evaluateJavaScript("this.onclick()")
                 # self.browser.wait_load(timeout=self.extra['timeout'])
-                self.browser.wk_click_element(element, wait_load=True, timeout= self.extra['timeout'])
+                self.browser.wk_click_element(element, wait_load=self.extra['wait'], timeout= self.extra['timeout'])
                 self.is_load = True
                 break

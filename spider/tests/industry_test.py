@@ -16,6 +16,7 @@ class IndustryTestCase(unittest.TestCase):
         self.extra['text'] = u'下一页'
         self.extra['class'] = 'm_table'
         self.extra['timeout'] = 600
+        self.extra['show'] = True
 
     def test_industry(self):
 

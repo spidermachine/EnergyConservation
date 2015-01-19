@@ -7,7 +7,7 @@ from taskmanagement.celery import app
 from spider.extension.facade import WorkerFacade
 from public.utils import tables
 
-@app.task()
+@app.task
 def yjl_task(extra):
 
     WorkerFacade.process_yjl(extra)
@@ -18,27 +18,26 @@ def industry_task(extra):
 
     WorkerFacade.process_industry(extra)
 
-@app.task()
+@app.task
 def fund_list_task(extra):
     WorkerFacade.process_fund_list(extra)
 
 @app.task(bind=True)
-def fund_share_task(extra):
+def fund_share_task(*args, **kwargs):
+    WorkerFacade.process_share(kwargs)
 
-    WorkerFacade.process_share(extra)
-
-@app.task()
+@app.task
 def stock_task(extra):
     WorkerFacade.process_stock(extra)
 
-@app.task()
+@app.task
 def fund_grade_task(extra):
     WorkerFacade.process_fund_grade(extra)
 
-@app.task()
+@app.task
 def fund_return_task(extra):
     WorkerFacade.process_fund_return(extra)
 
-@app.task()
+@app.task
 def stock_grade_task(extra):
     WorkerFacade.process_stock_grade(extra)

@@ -94,11 +94,18 @@ class ThriftHBaseStorage(Storage):
             columns = item.columns()[tables.COLUMN_FAMILY]
             sub_mutations = []
             for k, v in columns.items():
-                sub_mutations.append(Hbase.Mutation(column="{0}:{1}".format(tables.COLUMN_FAMILY, k), value=v.strip()))
+                sub_mutations.append(Hbase.Mutation(column="{0}:{1}".format(tables.COLUMN_FAMILY, k), value=self.process_none(v)))
 
             mutations.append(Hbase.BatchMutation(row=item.row(),
                                                  mutations=sub_mutations))
         self.client.mutateRows(data[0].table(), mutations, None)
+
+    def process_none(self, v):
+
+        if v is None:
+            return ""
+
+        return v.strip()
 
     def __delete__(self, instance):
         
