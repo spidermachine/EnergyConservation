@@ -99,6 +99,8 @@ BROKER_URL = 'redis://localhost:6379/0'
 
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
+CELERY_ALWAYS_EAGER = True
+
 import djcelery
 
 djcelery.setup_loader()
