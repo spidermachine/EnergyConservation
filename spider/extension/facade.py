@@ -16,6 +16,9 @@ from spider.extension.fund.extension import FundRetParser, FundRetGenerator, Fun
 
 from public.utils import tables
 
+from celery.utils.log import get_task_logger
+
+logger = get_task_logger(__name__)
 
 class WorkerFacade(object):
 
@@ -51,22 +54,24 @@ class WorkerFacade(object):
         share holds
         """
         columns = ["{0}:{1}".format(tables.COLUMN_FAMILY, tables.CODE),
-                   "{0}:{1}".format(tables.COLUMN_FAMILY, tables.URL),"{0}:{1}".format(tables.COLUMN_FAMILY, tables.TABLE_VISITED)]
+                   "{0}:{1}".format(tables.COLUMN_FAMILY, tables.URL),
+                   "{0}:{1}".format(tables.COLUMN_FAMILY, tables.TABLE_VISITED)]
+
 
         rows = ThriftHBaseStorage.get_instance().fetch(tables.TABLE_FUND, tables.TABLE_VISITED, ShareDataGenerator.VISITED, '=', columns)
-
+        logger.debug(rows)
         if not rows:
             ShareDataGenerator.VISITED = "visited"
             rows = ThriftHBaseStorage.get_instance().fetch(tables.TABLE_FUND, tables.VISITED, ShareDataGenerator.VISITED, '=', columns)
-
+        logger.debug(rows)
         if rows:
             extra['fund'] = rows[0].columns.get(columns[0]).value
             extra['url'] = rows[0].columns.get(columns[1]).value
             data_generator = ShareDataGenerator(extra)
             parser = ShareTableParser()
-            print "worker start"
+            logger.debug("worker start")
             WorkerFacade.worker(data_generator, parser)
-            print "worker end"
+            logger.debug("worker end")
             ThriftHBaseStorage.get_instance().update(tables.TABLE_FUND, rows[0].row, {'visited': "unvisited" if ShareDataGenerator.VISITED == "visited" else "visited"})
 
     @staticmethod
