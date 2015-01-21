@@ -5,7 +5,7 @@ __author__ = 'keping.chu'
 
 from taskmanagement.celery import app
 from spider.extension.facade import WorkerFacade
-from public.utils import tables
+
 
 @app.task
 def yjl_task(extra):
@@ -23,8 +23,8 @@ def fund_list_task(extra):
     WorkerFacade.process_fund_list(extra)
 
 @app.task(bind=True)
-def fund_share_task(*args, **kwargs):
-    WorkerFacade.process_share(kwargs)
+def fund_share_task(extra):
+    WorkerFacade.process_share(extra)
 
 @app.task
 def stock_task(extra):

@@ -74,14 +74,13 @@ class NextPageDataGenerator(JSDataGenerator):
         time.sleep(sleep)
 
         # find link of next page
-        web_elements = self.browser.webframe.findAllElements(self.extra['tag'])
+        web_elements = self.browser.webframe.findAllElements(self.extra.get('tag', 'a'))
         for element in web_elements:
             # print str(element.toInnerXml()).strip()
             # found the next page
-            if str(element.toInnerXml()).strip() == self.extra['text']:
+            if str(element.toInnerXml()).strip() == self.extra.get('text', u'下一页'):
                 # trigger the link and load the next page
-                # element.evaluateJavaScript("this.onclick()")
-                # self.browser.wait_load(timeout=self.extra['timeout'])
-                self.browser.wk_click_element(element, wait_load=self.extra['wait'], timeout= self.extra['timeout'])
+                self.browser.wk_click_element(element, wait_load=self.extra.get("wait", True),
+                                              timeout=self.extra.get('timeout', 10))
                 self.is_load = True
                 break
