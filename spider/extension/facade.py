@@ -51,20 +51,22 @@ class WorkerFacade(object):
         share holds
         """
         columns = ["{0}:{1}".format(tables.COLUMN_FAMILY, tables.CODE),
-                   "{0}:{1}".format(tables.COLUMN_FAMILY, tables.URL)]
+                   "{0}:{1}".format(tables.COLUMN_FAMILY, tables.URL),"{0}:{1}".format(tables.COLUMN_FAMILY, tables.TABLE_VISITED)]
 
         rows = ThriftHBaseStorage.get_instance().fetch(tables.TABLE_FUND, tables.TABLE_VISITED, ShareDataGenerator.VISITED, '=', columns)
 
         if not rows:
             ShareDataGenerator.VISITED = "visited"
-            rows = ThriftHBaseStorage.get_instance().fetch(tables.TABLE_FUND, tables.TABLE_VISITED, ShareDataGenerator.VISITED, '=', columns)
+            rows = ThriftHBaseStorage.get_instance().fetch(tables.TABLE_FUND, tables.VISITED, ShareDataGenerator.VISITED, '=', columns)
 
         if rows:
             extra['fund'] = rows[0].columns.get(columns[0]).value
             extra['url'] = rows[0].columns.get(columns[1]).value
             data_generator = ShareDataGenerator(extra)
             parser = ShareTableParser()
+            print "worker start"
             WorkerFacade.worker(data_generator, parser)
+            print "worker end"
             ThriftHBaseStorage.get_instance().update(tables.TABLE_FUND, rows[0].row, {'visited': "unvisited" if ShareDataGenerator.VISITED == "visited" else "visited"})
 
     @staticmethod

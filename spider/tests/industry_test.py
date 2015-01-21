@@ -17,6 +17,7 @@ class IndustryTestCase(unittest.TestCase):
         self.extra['class'] = 'm_table'
         self.extra['timeout'] = 600
         self.extra['show'] = True
+        self.extra['wait'] = True
 
     def test_industry(self):
 

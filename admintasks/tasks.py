@@ -24,6 +24,7 @@ def fund_list_task(extra):
 
 @app.task(bind=True)
 def fund_share_task(*args, **kwargs):
+    print args, kwargs
     WorkerFacade.process_share(kwargs)
 
 @app.task
