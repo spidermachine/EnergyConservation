@@ -30,16 +30,14 @@ class StockDataGenerator(TableBodyDataGenerator):
             if str(element.toInnerXml()).strip() == self.extra['more_text'] and\
                             self.extra['query'] in element.attribute("href"):
                 # trigger the link and load the next page
-                # element.evaluateJavaScript("this.click()")
                 try:
                     self.browser.wk_click_element(element, wait_load=True, timeout=10)
                 except SpynnerTimeout as e:
                     print e
-                # self.browser.wait_load(timeout=self.extra['timeout'])
                 is_load_header = True
                 break
 
-        if is_load_header:
+        if is_load_header and self.extra.get('need', True):
 
             element = self.browser.webframe.findFirstElement("div[class='bread-crumbs-details']")
 
@@ -65,12 +63,9 @@ class StockDataGenerator(TableBodyDataGenerator):
                 print e
             self.is_load = True
 
-
         if not self.is_load:
             if len(self.children) > 0:
                 element = self.children.pop(0)
-                # element.evaluateJavaScript("this.click()")
-                # self.browser.wait_load(timeout=self.extra['timeout'])
                 try:
                     self.browser.wk_click_element(element, wait_load=True, timeout=10)
                 except SpynnerTimeout as e:
@@ -121,7 +116,8 @@ class StockJournalData(HBaseData):
                                        tables.DELTA_RATIO: self.delta_ratio, tables.DELTA: self.delta,
                                        tables.START: self.start, tables.LAST: self.last,
                                        tables.HEIGHT: self.height, tables.LOW: self.low,
-                                       tables.COUNT: self.count, tables.STTO: self.stto,
+                                       tables.COUNT: self.count, tables.AMOUNT: self.amount,
+                                       tables.STTO: self.stto,
                                        tables.AMOUNT_RATIO: self.amount_ratio, tables.APPOINT_THAN: self.appoint_than,
                                        tables.AMPLITUDE: self.amplitude, tables.PE: self.pe,
                                        tables.LTSZ: self.LTSZ, tables.MC: self.MC,
@@ -204,3 +200,26 @@ class StockGradeParser(TableParser):
                               tds[6].string,
                               tds[7].string,
                               tds[8].string)
+
+
+class StockAData(StockJournalData):
+
+    def table(self):
+
+        return tables.TABLE_A_STOCK
+
+
+class StockAparser(StockTableParser):
+
+    def parse_item(self, tds):
+        a = tds[1].find("a")
+
+        return StockAData(a.string, tds[2].find("a").string,
+                                self.generator.extra.get('date', tools.current_date()),
+                                tds[3].string, tds[4].string, tds[5].string,
+                                tds[7].string, tds[8].string, tds[9].string,
+                                tds[10].string, tds[11].string, tds[12].string,
+                                tds[13].string, tds[14].string, tds[15].string,
+                                tds[16].string, tds[17].string, tds[18].string,
+                                tds[19].string, tds[20].string, tds[21].string,
+                                tds[22].string, self.generator.extra.get('category', "未知"), a['href'])

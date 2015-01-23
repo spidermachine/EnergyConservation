@@ -11,6 +11,7 @@ sys.setdefaultencoding('utf-8')
 from spynner import browser
 from PyQt4.QtWebKit import QWebSettings
 
+
 class DataGenerator(object):
     """
 
@@ -47,7 +48,11 @@ class JSDataGenerator(DataGenerator):
             return True, html
         else:
             return False, None
-
+        
+    def __del__(self):
+        
+        self.browser.destroy_webview()
+        super(object, self).__del__()
 
 class NextPageDataGenerator(JSDataGenerator):
 
