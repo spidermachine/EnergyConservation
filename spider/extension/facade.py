@@ -121,6 +121,6 @@ class WorkerFacade(object):
 
     @staticmethod
     def process_a_stock(extra):
-        data_generator = StockTableParser(extra)
+        data_generator = StockDataGenerator(extra)
         parser = StockAparser()
         WorkerFacade.worker(data_generator, parser)

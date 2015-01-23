@@ -55,7 +55,13 @@ class StockDataGenerator(TableBodyDataGenerator):
 
         # find link of next page
         hsRank = self.browser.webframe.findFirstElement("div[id='hsRank']")
-        element = hsRank.findFirst("a[class='pages_flip']")
+        elementList = hsRank.findAll("a[class='pages_flip']")
+        element = None
+        if elementList and elementList.count() > 0:
+
+            element = elementList.last()
+
+
         if element and (str(element.toInnerXml()).strip() == self.extra['text']):
             try:
                 self.browser.wk_click_element(element, wait_load=True, timeout=10)
@@ -66,6 +72,7 @@ class StockDataGenerator(TableBodyDataGenerator):
         if not self.is_load:
             if len(self.children) > 0:
                 element = self.children.pop(0)
+                self.extra['category'] = str(element.toInnerXml()).strip()
                 try:
                     self.browser.wk_click_element(element, wait_load=True, timeout=10)
                 except SpynnerTimeout as e:

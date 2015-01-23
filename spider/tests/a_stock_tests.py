@@ -6,7 +6,7 @@ __author__ = 'keping'
 import unittest
 
 
-class StockTestCase(unittest.TestCase):
+class StockATestCase(unittest.TestCase):
 
     def setUp(self):
         self.extra = dict()

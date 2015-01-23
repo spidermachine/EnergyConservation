@@ -183,7 +183,7 @@ class FundRetData(HBaseData):
                                        tables.RET_WEEK: self.ret_week,
                                        tables.RET_MONTH: self.ret_month,
                                        tables.RET_HALF_YEAR: self.ret_half_year,
-                                       tables.RET_YEAR: self.ret_year}}
+                                       tables.RET_YEAR: self.ret__year}}
 
 
 class FundRetParser(TableParser):

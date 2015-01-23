@@ -48,11 +48,12 @@ class JSDataGenerator(DataGenerator):
             return True, html
         else:
             return False, None
-        
+
     def __del__(self):
-        
+
         self.browser.destroy_webview()
-        super(object, self).__del__()
+
+
 
 class NextPageDataGenerator(JSDataGenerator):
 
