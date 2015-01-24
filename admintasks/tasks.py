@@ -7,7 +7,7 @@ from taskmanagement.celery import app
 from spider.extension.facade import WorkerFacade
 
 import os
-os.environ['DISPLAY'] = '111'
+os.environ['DISPLAY'] = ':1'
 
 @app.task
 def yjl_task(*args, **kwargs):
