@@ -6,6 +6,8 @@ __author__ = 'keping.chu'
 from taskmanagement.celery import app
 from spider.extension.facade import WorkerFacade
 
+import os
+os.environ['DISPLAY'] = '111'
 
 @app.task
 def yjl_task(*args, **kwargs):
