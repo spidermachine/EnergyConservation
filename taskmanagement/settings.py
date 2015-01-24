@@ -1,3 +1,6 @@
+# !/usr/bin/python
+# vim: set fileencoding=utf8 :
+#
 """
 Django settings for taskmanagement project.
 
@@ -97,13 +100,103 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # celery
 BROKER_URL = 'redis://localhost:6379/0'
 
-CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+# CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
 CELERY_RESULT_BACKEND = 'db+mysql://finance:finance@localhost:3306/finance'
 
 CELERY_ALWAYS_EAGER = True
 
 CELERY_ENABLE_UTC = False
+
+from celery.schedules import crontab
+
+CELERYBEAT_SCHEDULE = {
+    # Executes every Monday morning at 7:30 A.M
+    u'采集基金持股': {
+        'task': 'admintasks.tasks.fund_share_task',
+        'schedule': crontab(minute='*/3', hour='*', day_of_week='*'),
+        'args': (),
+        'kwargs': {"timeout": 10, "show": True, "wait": True}
+    },
+    u'采集基金评级': {
+        'task': 'admintasks.tasks.fund_grade_task',
+        'schedule': crontab(minute='0', hour=21, day_of_week='*'),
+        'args': (),
+        'kwargs': {"url": "http://cn.morningstar.com/quickrank/default.aspx",
+                   "timeout": 600,
+                   "continue": True,
+                   "text": "&gt;",
+                   "tag": "a",
+                   "id": "ctl00_cphMain_gridResult",
+                   "wait": True
+        }
+    },
+    u'采集基金列表': {
+        'task': 'admintasks.tasks.fund_list_task',
+        'schedule': crontab(minute='0', hour=17, day_of_week='*'),
+        'args': (),
+        'kwargs': {"url": "http://quotes.money.163.com",
+                   "timeout": 20,
+                   "continue": True,
+                   "class": "dbtable",
+                   "tag": "a",
+                   "text": "下一页",
+                   "query": "'#FN'",
+                   "sub_domain": "股票型",
+                   "header_text": "基金净值"
+        }
+    },
+    u'采集行业资金流': {
+        'task': 'admintasks.tasks.industry_task',
+        'schedule': crontab(minute='0', hour=19, day_of_week='*'),
+        'args': (),
+        'kwargs': {"url": "http://data.10jqka.com.cn/funds/hyzjl",
+                   "continue": True,
+                   "class": "m_table",
+                   "timeout": 600,
+                   "text": u"下一页",
+                   "tag": "a",
+                   "wait": True
+        }
+    },u'采集股票评级': {
+        'task': 'admintasks.tasks.stock_grade_task',
+        'schedule': crontab(minute=0, hour=22, day_of_week='*'),
+        'args': (),
+        'kwargs': {
+            "url":"http://vip.stock.finance.sina.com.cn/q/go.php/vIR_SumRating/index.phtml",
+            "timeout": 600,
+            "tag": "a",
+            "text": u"下一页",
+            "class": "list_table",
+            "continue": True,
+            "show": True,
+            "wait": True
+        }
+    },
+    u'采集股票分类列表': {
+        'task': 'admintasks.tasks.stock_task',
+        'schedule': crontab(minute=0, hour=20, day_of_week='*'),
+        'args': (),
+        'kwargs': {
+            "url": "http://quotes.money.163.com/",
+            "continue": True,
+            "tag": "a",
+            "text": "下一页",
+            "more_text": "更多",
+            "timeout": 10,
+            "query": "#query:hy",
+            "class": "stocks-info-table",
+            "wait": True
+        }
+    }
+    # ,
+    # u'易精灵': {
+    #     'task': 'admintasks.tasks.yjl_task',
+    #     'schedule': crontab(minute=0, hour=23, day_of_week='*'),
+    #     'args': (),
+    #     'kwargs': {"timeout": 10, "show": True, "wait": True}
+    # }
+}
 
 import djcelery
 
