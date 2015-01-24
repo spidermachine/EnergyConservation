@@ -6,14 +6,11 @@ __author__ = 'keping.chu'
 from taskmanagement.celery import app
 from spider.extension.facade import WorkerFacade
 
-import os
-os.environ['DISPLAY'] = ':1'
 
 @app.task
 def yjl_task(*args, **kwargs):
 
     WorkerFacade.process_yjl(kwargs)
-
 
 @app.task(bind=True, max_retries=5)
 def industry_task(self, *args, **kwargs):
