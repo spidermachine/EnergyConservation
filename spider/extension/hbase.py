@@ -89,6 +89,8 @@ class ThriftHBaseStorage(Storage):
         self.update(data.table(), data.row(), columns)
 
     def batch_save(self, data):
+        if (data is None) or (len(data) == 0):
+            return
         mutations = []
         for item in data:
             columns = item.columns()[tables.COLUMN_FAMILY]

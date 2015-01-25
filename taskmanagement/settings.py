@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from __future__ import absolute_import
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -114,13 +115,13 @@ CELERYBEAT_SCHEDULE = {
     # Executes every Monday morning at 7:30 A.M
     u'采集基金持股': {
         'task': 'admintasks.tasks.fund_share_task',
-        'schedule': crontab(minute='*/3', hour='*', day_of_week='*'),
+        'schedule': crontab(minute='*/3'),
         'args': (),
         'kwargs': {"timeout": 10, "show": True, "wait": True}
     },
     u'采集基金评级': {
         'task': 'admintasks.tasks.fund_grade_task',
-        'schedule': crontab(minute='0', hour=21, day_of_week='*'),
+        'schedule': crontab(minute=0, hour='21'),
         'args': (),
         'kwargs': {"url": "http://cn.morningstar.com/quickrank/default.aspx",
                    "timeout": 600,
@@ -133,7 +134,7 @@ CELERYBEAT_SCHEDULE = {
     },
     u'采集基金列表': {
         'task': 'admintasks.tasks.fund_list_task',
-        'schedule': crontab(minute='0', hour=17, day_of_week='*'),
+        'schedule': crontab(minute=0, hour='17'),
         'args': (),
         'kwargs': {"url": "http://quotes.money.163.com",
                    "timeout": 20,
@@ -148,7 +149,7 @@ CELERYBEAT_SCHEDULE = {
     },
     u'采集行业资金流': {
         'task': 'admintasks.tasks.industry_task',
-        'schedule': crontab(minute='0', hour=19, day_of_week='*'),
+        'schedule': crontab(minute=0, hour='19'),
         'args': (),
         'kwargs': {"url": "http://data.10jqka.com.cn/funds/hyzjl",
                    "continue": True,
@@ -160,7 +161,7 @@ CELERYBEAT_SCHEDULE = {
         }
     },u'采集股票评级': {
         'task': 'admintasks.tasks.stock_grade_task',
-        'schedule': crontab(minute=0, hour=22, day_of_week='*'),
+        'schedule': crontab(minute=0, hour='22'),
         'args': (),
         'kwargs': {
             "url":"http://vip.stock.finance.sina.com.cn/q/go.php/vIR_SumRating/index.phtml",
@@ -175,7 +176,7 @@ CELERYBEAT_SCHEDULE = {
     },
     u'采集股票分类列表': {
         'task': 'admintasks.tasks.stock_task',
-        'schedule': crontab(minute=0, hour=20, day_of_week='*'),
+        'schedule': crontab(minute=0, hour='20'),
         'args': (),
         'kwargs': {
             "url": "http://quotes.money.163.com/",
@@ -198,7 +199,7 @@ CELERYBEAT_SCHEDULE = {
     # }
 }
 
-import djcelery
-
-djcelery.setup_loader()
+# import djcelery
+#
+# djcelery.setup_loader()
 

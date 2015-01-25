@@ -50,8 +50,8 @@ class JSDataGenerator(DataGenerator):
             return False, None
 
     def __del__(self):
-
-        self.browser.destroy_webview()
+        if hasattr(self, 'browser'):
+            self.browser.destroy_webview()
 
 
 
