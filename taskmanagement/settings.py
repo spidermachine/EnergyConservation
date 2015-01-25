@@ -148,7 +148,7 @@ CELERYBEAT_SCHEDULE = {
     },
     u'采集行业资金流': {
         'task': 'admintasks.tasks.industry_task',
-        'schedule': crontab(minute='0', hour=19, day_of_week='*'),
+        'schedule': crontab(minute=0, hour=19, day_of_week='*'),
         'args': (),
         'kwargs': {"url": "http://data.10jqka.com.cn/funds/hyzjl",
                    "continue": True,
