@@ -14,11 +14,11 @@ from spider.extension.industry.extension import IndustryParser
 from spider.extension.share.extension import ShareTableParser, ShareDataGenerator
 from spider.extension.fund.extension import FundRetParser, FundRetGenerator, FundParser, FundBodyDataGenerator
 
-from public.utils import tables
+from public.utils import tables, memcache
 
-from celery.utils.log import get_task_logger
-
-logger = get_task_logger(__name__)
+# from celery.utils.log import get_task_logger
+#
+# logger = get_task_logger(__name__)
 
 
 class WorkerFacade(object):
@@ -59,21 +59,23 @@ class WorkerFacade(object):
                    "{0}:{1}".format(tables.COLUMN_FAMILY, tables.TABLE_VISITED)]
 
 
-        rows = ThriftHBaseStorage.get_instance().fetch(tables.TABLE_FUND, tables.TABLE_VISITED, ShareDataGenerator.VISITED, '=', columns)
-        logger.debug(rows)
+        rows = ThriftHBaseStorage.get_instance().fetch(tables.TABLE_FUND, tables.TABLE_VISITED, memcache.get_visited(),
+                                                       '=', columns)
+        # logger.debug(rows)
         if not rows:
-            ShareDataGenerator.VISITED = "visited"
-            rows = ThriftHBaseStorage.get_instance().fetch(tables.TABLE_FUND, tables.VISITED, ShareDataGenerator.VISITED, '=', columns)
-        logger.debug(rows)
+            memcache.set_reverse()
+            rows = ThriftHBaseStorage.get_instance().fetch(tables.TABLE_FUND, tables.TABLE_VISITED, memcache.get_visited(),
+                                                           '=', columns)
+        # logger.debug(rows)
         if rows:
             extra['fund'] = rows[0].columns.get(columns[0]).value
             extra['url'] = rows[0].columns.get(columns[1]).value
             data_generator = ShareDataGenerator(extra)
             parser = ShareTableParser()
-            logger.debug("worker start")
+            # logger.debug("worker start")
             WorkerFacade.worker(data_generator, parser)
-            logger.debug("worker end")
-            ThriftHBaseStorage.get_instance().update(tables.TABLE_FUND, rows[0].row, {'visited': "unvisited" if ShareDataGenerator.VISITED == "visited" else "visited"})
+            # logger.debug("worker end")
+            ThriftHBaseStorage.get_instance().update(tables.TABLE_FUND, rows[0].row, {memcache.visited: memcache.unvisited if memcache.get_visited() == memcache.visited else memcache.visited})
 
     @staticmethod
     def process_fund_list(extra):

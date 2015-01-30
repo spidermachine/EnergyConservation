@@ -9,7 +9,10 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 from spynner import browser
+from spynner.browser import SpynnerTimeout
 from PyQt4.QtWebKit import QWebSettings
+
+
 
 
 class DataGenerator(object):
@@ -49,11 +52,6 @@ class JSDataGenerator(DataGenerator):
         else:
             return False, None
 
-    def __del__(self):
-        if hasattr(self, 'browser'):
-            self.browser.destroy_webview()
-
-
 
 class NextPageDataGenerator(JSDataGenerator):
 
@@ -86,7 +84,13 @@ class NextPageDataGenerator(JSDataGenerator):
             # found the next page
             if str(element.toInnerXml()).strip() == self.extra.get('text', u'下一页'):
                 # trigger the link and load the next page
-                self.browser.wk_click_element(element, wait_load=self.extra.get("wait", True),
-                                              timeout=self.extra.get('timeout', 10))
+                try:
+                    self.browser.wk_click_element(element, wait_load=self.extra.get("wait", True),
+                                                  timeout=self.extra.get('timeout', 10))
+                except SpynnerTimeout as e:
+                    print e
+                    if not self.extra.get('ignore_timeout', True):
+                        raise e
+
                 self.is_load = True
                 break

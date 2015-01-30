@@ -15,9 +15,16 @@ class IndustryTestCase(unittest.TestCase):
         self.extra['tag'] = 'a'
         self.extra['text'] = u'下一页'
         self.extra['class'] = 'm_table'
-        self.extra['timeout'] = 600
-        self.extra['show'] = True
+        self.extra['timeout'] = 90
+        # self.extra['show'] = True
         self.extra['wait'] = True
+
+        from xvfbwrapper import Xvfb
+        self.xvfb = Xvfb(width=1280, height=720)
+        self.xvfb.start()
+
+    def tearDown(self):
+        self.xvfb.stop()
 
     def test_industry(self):
 

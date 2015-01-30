@@ -15,8 +15,15 @@ class GradeTestCase(unittest.TestCase):
         self.extra['id'] = 'ctl00_cphMain_gridResult'
         self.extra['show'] = True
 
-    def test_grade(self):
+        from django.conf import settings
+        from xvfbwrapper import Xvfb
+        self.xvfb = Xvfb(width=1280, height=720)
+        self.xvfb.start()
 
+    def tearDown(self):
+        self.xvfb.stop()
+
+    def test_grade(self):
         from spider.extension.facade import WorkerFacade
         WorkerFacade.process_fund_grade(self.extra)
 

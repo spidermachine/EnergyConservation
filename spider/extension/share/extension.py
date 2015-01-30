@@ -18,7 +18,6 @@ class ShareDataGenerator(JSDataGenerator):
     """
     share holds
     """
-    VISITED = "unvisited"
 
     def data(self):
 
@@ -31,13 +30,13 @@ class ShareDataGenerator(JSDataGenerator):
             data = str(tbody)
 
             # collection return data with sub tasks
-            try:
-                from admintasks import tasks
-                sub_extra = copy.deepcopy(self.extra)
-                sub_extra['html'] = origin_data
-                tasks.fund_return_task.apply_async((sub_extra), countdown=2)
-            except Exception as e:
-                print e
+            # try:
+            #     from admintasks import tasks
+            #     sub_extra = copy.deepcopy(self.extra)
+            #     sub_extra['html'] = origin_data
+            #     tasks.fund_return_task.apply_async((sub_extra), countdown=2)
+            # except Exception as e:
+            #     print e
 
         return is_loop, data
 

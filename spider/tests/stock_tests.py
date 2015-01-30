@@ -18,7 +18,14 @@ class StockTestCase(unittest.TestCase):
         self.extra['timeout'] = 600
         self.extra['query'] = "#query=hy"
         self.extra['class'] = "stocks-info-table"
-        self.extra['show'] = True
+        # self.extra['show'] = True
+
+        from xvfbwrapper import Xvfb
+        self.xvfb = Xvfb(width=1280, height=720)
+        self.xvfb.start()
+
+    def tearDown(self):
+        self.xvfb.stop()
 
 
     def test_stock(self):

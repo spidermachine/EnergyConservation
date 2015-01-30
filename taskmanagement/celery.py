@@ -9,10 +9,6 @@ import os
 
 from celery import Celery
 
-from django.conf import settings
-from xvfbwrapper import Xvfb
-xvfb = Xvfb(width=1280, height=720)
-xvfb.start()
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'taskmanagement.settings')
