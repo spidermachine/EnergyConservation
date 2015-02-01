@@ -11,7 +11,7 @@ if __name__ == "__main__":
     sc = SparkContext(appName='continueDecrease')
     sqlContext = HiveContext(sc)
 
-    stocks = sqlContext.sql("select key, code from hbase_stock")
+    stocks = sqlContext.sql("select rowkey, code from hbase_stock").collect()
 
     for stock in stocks:
         print stock
