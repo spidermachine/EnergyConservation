@@ -13,7 +13,7 @@ class FundTestCase(unittest.TestCase):
         self.extra = dict()
         # self.extra['url'] = "http://fund.eastmoney.com/fund.html"
         self.extra['url'] = "http://quotes.money.163.com/"
-        self.extra['timeout'] = 10
+        self.extra['timeout'] = 100
         self.extra['continue'] = True
         self.extra['header_text'] = u'基金净值'
         self.extra['sub_domain'] = u'股票型'
