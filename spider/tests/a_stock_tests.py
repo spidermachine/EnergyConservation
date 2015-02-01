@@ -20,7 +20,6 @@ class StockATestCase(unittest.TestCase):
         self.extra['class'] = "stocks-info-table"
         self.extra['show'] = True
         self.extra['need'] = False
-        from django.conf import settings
         from xvfbwrapper import Xvfb
         self.xvfb = Xvfb(width=1280, height=720)
         self.xvfb.start()

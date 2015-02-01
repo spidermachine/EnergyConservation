@@ -13,9 +13,7 @@ class FundShareTestCase(unittest.TestCase):
         # self.extra['url'] = "http://fund.eastmoney.com/f10/ccmx_288002.html"
         self.extra['timeout'] = 600
         self.extra['show'] = True
-        # self.extra['fund'] = '288002'
 
-        from django.conf import settings
         from xvfbwrapper import Xvfb
         self.xvfb = Xvfb(width=1280, height=720)
         self.xvfb.start()

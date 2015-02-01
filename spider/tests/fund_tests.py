@@ -23,7 +23,6 @@ class FundTestCase(unittest.TestCase):
         # self.extra['class'] = 'dbtable'
         self.extra['show'] = True
 
-        from django.conf import settings
         from xvfbwrapper import Xvfb
         self.xvfb = Xvfb(width=1280, height=720)
         self.xvfb.start()

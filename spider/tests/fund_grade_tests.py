@@ -15,7 +15,6 @@ class GradeTestCase(unittest.TestCase):
         self.extra['id'] = 'ctl00_cphMain_gridResult'
         self.extra['show'] = True
 
-        from django.conf import settings
         from xvfbwrapper import Xvfb
         self.xvfb = Xvfb(width=1280, height=720)
         self.xvfb.start()
