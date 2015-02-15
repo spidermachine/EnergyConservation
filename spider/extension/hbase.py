@@ -69,7 +69,7 @@ class ThriftHBaseStorage(Storage):
             ThriftHBaseStorage.INSTANCE = ThriftHBaseStorage()
         return ThriftHBaseStorage.INSTANCE
 
-    def __init__(self, host='127.0.0.1', port='9090'):
+    def __init__(self, host='127.0.0.1', port=9090):
 
         if not hasattr(self, "transport"):
             self.host = host
