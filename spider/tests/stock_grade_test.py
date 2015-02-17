@@ -15,16 +15,17 @@ class StockGradeTestCase(unittest.TestCase):
         self.extra['tag'] = 'a'
         self.extra['text'] = u'下一页'
         self.extra['class'] = 'list_table'
-        # self.extra['show'] = True
+        self.extra['show'] = True
         self.extra['continue'] = True
         self.extra['ignore_timeout'] = False
+        self.extra['sleep'] = 20
 
-        from xvfbwrapper import Xvfb
-        self.xvfb = Xvfb(width=1280, height=720)
-        self.xvfb.start()
+        # from xvfbwrapper import Xvfb
+        # self.xvfb = Xvfb(width=1280, height=720)
+        # self.xvfb.start()
 
-    def tearDown(self):
-        self.xvfb.stop()
+    # def tearDown(self):
+        # self.xvfb.stop()
 
     def test_stock_grade(self):
         from spider.extension.facade import WorkerFacade

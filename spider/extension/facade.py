@@ -3,7 +3,7 @@
 #
 __author__ = 'keping.chu'
 
-from spider.extension.hbase import ThriftHBaseStorage
+from spider.extension.hbase import ThriftHBaseStorage, HBaseStorage
 from spider.framework.workers import BasicWorker
 
 from spider.extension.generators import TableBodyDataGenerator
@@ -29,7 +29,8 @@ class WorkerFacade(object):
         basic worker
         """
 
-        BasicWorker(generator, ThriftHBaseStorage.get_instance(), parser).process()
+        # BasicWorker(generator, ThriftHBaseStorage.get_instance(), parser).process()
+        BasicWorker(generator, HBaseStorage(), parser).process()
 
     @staticmethod
     def process_yjl(extra):
