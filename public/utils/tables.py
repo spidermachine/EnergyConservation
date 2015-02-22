@@ -74,3 +74,10 @@ HOLD_GRADE = "hold_grade"
 NEUTRAL_GRADE = "neutral_grade"
 DEC_GRADE = "dec_grade"
 SOLD_GRADE = "sold_grade"
+
+# new grade of stock
+TABLE_NEW_GRADE = "stock_new_grade"
+GROUP = "group"
+MASTER = "master"
+NOW_PRICE = "now_price"
+
