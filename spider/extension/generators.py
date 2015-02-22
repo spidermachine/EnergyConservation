@@ -53,11 +53,15 @@ class TableParser(Parser):
             for tr in self.clean_data(soup.find_all(tags.tr)):
                 tds = tr.find_all(tags.td)
                 item = self.parse_item(tds)
+                self.stop_parse(generator, item)
                 if item:
                     items.append(item)
         except Exception as e:
             print e
         return items
+
+    def stop_parse(self, generator=None, item=None):
+        pass
 
     def clean_data(self, trs):
 

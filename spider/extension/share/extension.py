@@ -60,10 +60,12 @@ class ShareData(HBaseData):
         return tables.ROW_ID.format(self.fund, self.code)
 
     def columns(self):
-        return {tables.COLUMN_FAMILY: {tables.CODE: self.code, tables.NAME: self.name,
+        return {tables.COLUMN_FAMILY: {tables.CODE: self.code,
+                                       tables.NAME: self.name,
                                        tables.PERCENTAGE: self.percentage,
                                        tables.AMOUNT: self.amount,
-                                       tables.URL: self.url}}
+                                       tables.URL: self.url,
+                                       "fund": self.fund}}
 
 
 class ShareTableParser(TableParser):

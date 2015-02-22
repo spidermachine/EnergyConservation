@@ -1,16 +1,16 @@
 # !/usr/bin/python
 # vim: set fileencoding=utf8 :
 #
-__author__ = 'keping'
+__author__ = 'geu'
 
 import unittest
 
 
-class StockGradeTestCase(unittest.TestCase):
+class StockNewGradeTestCase(unittest.TestCase):
 
     def setUp(self):
         self.extra = dict()
-        self.extra['url'] = "http://vip.stock.finance.sina.com.cn/q/go.php/vIR_SumRating/index.phtml"
+        self.extra['url'] = "http://vip.stock.finance.sina.com.cn/q/go.php/vIR_RatingNewest/index.phtml"
         self.extra['timeout'] = 60
         self.extra['tag'] = 'a'
         self.extra['text'] = u'下一页'
@@ -29,7 +29,7 @@ class StockGradeTestCase(unittest.TestCase):
 
     def test_stock_grade(self):
         from spider.extension.facade import WorkerFacade
-        WorkerFacade.process_stock_grade(self.extra)
+        WorkerFacade.process_stock_new_grade(self.extra)
 
 
 if __name__ == '__main__':

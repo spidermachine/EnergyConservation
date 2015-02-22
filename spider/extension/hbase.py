@@ -4,7 +4,7 @@
 __author__ = 'keping.chu'
 
 
-from spider.framework.storage import Storage
+from spider.framework.storage import Storage, HBaseData
 from public.utils import tables
 
 from thrift.transport import TSocket
@@ -12,43 +12,42 @@ from thrift.protocol import TBinaryProtocol
 from thrift.transport import TTransport
 from thrifthbase.hbase import Hbase
 
-# from starbase.client import connection
-# class HBaseStorage(Storage):
-#     """
-#     storage for HBase
-#     """
-#     def __new__(cls, *args, **kwargs):
-#
-#         if not hasattr(cls, "instance"):
-#             cls.instance = super(HBaseStorage, cls).__new__(cls, *args, **kwargs)
-#
-#         return cls.instance
-#
-#     def __init__(self, host='127.0.0.1', port='9999', user=None, password=None, secure=False):
-#
-#         if not hasattr(self, "c"):
-#             self.c = connection.Connection(host, port, user, password, secure)
-#
-#     def save(self, data):
-#
-#         if issubclass(type(data), HBaseData):
-#             table = self.c.table(data.table())
-#             table.insert(data.row(), data.columns())
-#
-#     def fetch(self, attribute):
-#
-#         t = self.c.table(attribute['table'])
-#         return t.fetch_all_rows(perfect_dict= {}, filter_string=attribute['filter'], scanner_config=attribute['scanner_config'])
-#
-#
-#     def batch_save(self, data):
-#
-#         if isinstance(data, list):
-#             b = self.c.table(data[0].table()).batch()
-#             if b:
-#                 for item in data:
-#                     b.insert(item.row(), item.columns())
-#                 b.commit(finalize=True)
+from starbase.client import connection
+class HBaseStorage(Storage):
+    """
+    storage for HBase
+    """
+    def __new__(cls, *args, **kwargs):
+
+        if not hasattr(cls, "instance"):
+            cls.instance = super(HBaseStorage, cls).__new__(cls, *args, **kwargs)
+
+        return cls.instance
+
+    def __init__(self, host='127.0.0.1', port='9999', user=None, password=None, secure=False):
+
+        if not hasattr(self, "c"):
+            self.c = connection.Connection(host, port, user, password, secure)
+
+    def save(self, data):
+
+        if issubclass(type(data), HBaseData):
+            table = self.c.table(data.table())
+            table.insert(data.row(), data.columns())
+
+    def fetch(self, attribute):
+
+        t = self.c.table(attribute['table'])
+        return t.fetch_all_rows(perfect_dict= {}, filter_string=attribute['filter'], scanner_config=attribute['scanner_config'])
+
+    def batch_save(self, data):
+
+        if isinstance(data, list) and len(data) > 0:
+            b = self.c.table(data[0].table()).batch()
+            if b:
+                for item in data:
+                    b.insert(item.row(), item.columns())
+                b.commit(finalize=True)
 
 
 class ThriftHBaseStorage(Storage):

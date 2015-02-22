@@ -229,4 +229,66 @@ class StockAparser(StockTableParser):
                                 tds[13].string, tds[14].string, tds[15].string,
                                 tds[16].string, tds[17].string, tds[18].string,
                                 tds[19].string, tds[20].string, tds[21].string,
-                                tds[22].string, self.generator.extra.get('category', "未知"), a['href'])
+                                tds[22].string, self.generator.extra.get('category', u"未知"), a['href'])
+
+
+class StockNewGradeData(HBaseData):
+
+    def __init__(self, name, code, url, price, grade, group, master, date,  now_price):
+        self.name = name
+        self.code = code
+        self.grade = grade.replace('\n', '').replace('\t', '').replace(' ', '')
+        self.master = master
+        self.group = group
+        self.date = date
+        self.price = price
+        self.now_price = now_price
+        self.url = url
+
+    def table(self):
+
+        return tables.TABLE_NEW_GRADE
+
+    def row(self):
+
+        return tables.ROW_ID.format(self.code, self.date)
+
+    def columns(self):
+
+        return {tables.COLUMN_FAMILY: {
+            tables.CODE: self.code,
+            tables.NAME: self.name,
+            tables.MASTER: self.master,
+            tables.GROUP: self.group,
+            tables.PRICE: self.price,
+            tables.NOW_PRICE: self.now_price,
+            tables.DATE: self.date,
+            tables.URL: self.url,
+            tables.GRADE: self.grade
+        }}
+
+
+class StockNewGradeParser(TableParser):
+
+    def parse_item(self, tds):
+        code, url = self.parse_tag_a(tds[0])
+        return StockNewGradeData(self.parse_tag_a(tds[1])[0],
+                                 code,
+                                 url,
+                                 tds[2].string,
+                                 tds[3].string,
+                                 tds[4].string,
+                                 tds[5].string,
+                                 tds[7].string,
+                                 tds[9].string)
+
+    def stop_parse(self, generator=None, item=None):
+        if generator and item:
+            if item.date != tools.current_date():
+            # if item.date != '2015-02-17':
+                generator.extra['continue'] = False
+
+
+    def clean_data(self, trs):
+
+        return trs[1:]

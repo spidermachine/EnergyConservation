@@ -3,11 +3,11 @@
 #
 __author__ = 'keping.chu'
 
-from spider.extension.hbase import ThriftHBaseStorage
+from spider.extension.hbase import ThriftHBaseStorage, HBaseStorage
 from spider.framework.workers import BasicWorker
 
 from spider.extension.generators import TableBodyDataGenerator
-from spider.extension.stock.extension import StockDataGenerator, StockTableParser, StockGradeParser, StockAparser
+from spider.extension.stock.extension import StockDataGenerator, StockTableParser, StockGradeParser, StockAparser, StockNewGradeParser
 from spider.extension.grade.extendsion import GradeDataParser
 from spider.extension.yjl.extension import YJLParser
 from spider.extension.industry.extension import IndustryParser
@@ -29,7 +29,8 @@ class WorkerFacade(object):
         basic worker
         """
 
-        BasicWorker(generator, ThriftHBaseStorage.get_instance(), parser).process()
+        # BasicWorker(generator, ThriftHBaseStorage.get_instance(), parser).process()
+        BasicWorker(generator, HBaseStorage(), parser).process()
 
     @staticmethod
     def process_yjl(extra):
@@ -126,4 +127,11 @@ class WorkerFacade(object):
     def process_a_stock(extra):
         data_generator = StockDataGenerator(extra)
         parser = StockAparser()
+        WorkerFacade.worker(data_generator, parser)
+
+    @staticmethod
+    def process_stock_new_grade(extra):
+
+        data_generator = TableBodyDataGenerator(extra)
+        parser = StockNewGradeParser()
         WorkerFacade.worker(data_generator, parser)
