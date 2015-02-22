@@ -129,3 +129,7 @@ class ThriftHBaseStorage(Storage):
         columns = attributes
         mutations = [Hbase.Mutation(column="{0}:{1}".format(tables.COLUMN_FAMILY, k), value=v.strip()) for k, v in columns.items()]
         self.client.mutateRow(table, row, mutations, {})
+
+    def delete_row(self, table, row, attributes={}):
+
+        self.client.deleteAllRow(table, row, attributes)
