@@ -69,6 +69,12 @@ class WorkerFacade(object):
                                                            '=', columns)
         # logger.debug(rows)
         if rows:
+
+            remove_rows = ThriftHBaseStorage.get_instance().fetch(tables.TABLE_SHARE, "fund", rows[0].columns.get(columns[0]).value, '=')
+
+            for item in remove_rows:
+                ThriftHBaseStorage.get_instance().delete_row(tables.TABLE_SHARE, item.row)
+
             extra['fund'] = rows[0].columns.get(columns[0]).value
             extra['url'] = rows[0].columns.get(columns[1]).value
             data_generator = ShareDataGenerator(extra)
