@@ -17,7 +17,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-select_stock = "select split(rowkey, '_')[0] as date, code, price from hbase_stock where split(rowkey, '_')[0] > '{0}'"
+select_stock = "select split(rowkey, '_')[1] as date, code, price from hbase_stock where split(rowkey, '_')[1] > '{0}'"
 
 
 def convert_to_point(data):
