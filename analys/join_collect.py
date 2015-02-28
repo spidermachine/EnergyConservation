@@ -43,7 +43,7 @@ if __name__ == "__main__":
     # sqlContext.registerRDDAsTable(grade, "grade")
     gradeSchema = otherContext.inferSchema(grade)
     gradeSchema.registerTempTable("grade")
-    stocks = sqlContext.sql("select * from hbase_stock where split(rowkey, '_')[1] > '{0}'".format(tools.day_after_now(-8))).map(lambda row: (row.code, row)).groupByKey().filter(two_decreace).map(sum_decrease_info).filter(lambda row: row[1] <= -0.0).map(lambda row: Row(code=row[0], delta=row[1]))
+    stocks = sqlContext.sql("select * from hbase_stock where split(rowkey, '_')[1] > '{0}'".format(tools.day_after_now(-3))).map(lambda row: (row.code, row)).groupByKey().filter(two_decreace).map(sum_decrease_info).filter(lambda row: row[1] <= -0.0).map(lambda row: Row(code=row[0], delta=row[1]))
     # sqlContext.registerRDDAsTable(stocks, "stocks")
     stocksSchema = otherContext.inferSchema(stocks)
     stocksSchema.registerTempTable("stocks")
