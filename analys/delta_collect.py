@@ -35,13 +35,13 @@ if __name__ == "__main__":
     # data since month ago
     for day in [-30]:
         stocks = sqlContext.sql(select_stock.format(tools.day_after_now(day))).map(lambda row: (row.code, row)).groupByKey().map(convert_to_point)
-        data_sets = []
+        deltas = []
         for each_stock in stocks.collect():
             data_set = sc.parallelize(each_stock[1])
-            data_sets.append((each_stock[0], data_set))
+            model = LinearRegressionWithSGD.train(data_set)
 
-        deltas = sc.parallelize(data_sets).map(lambda row: (row[0], LinearRegressionWithSGD.train(row[1])))
+            deltas.append((each_stock[0], model))
 
-        for delta in deltas.collect():
+        for delta in deltas:
 
-            print delta[1].weights
+            print delta[0], delta[1].weights
