@@ -27,7 +27,7 @@ def convert_to_point(data):
 
     point_list = []
     for row in sorted_list:
-        point_list.append(LabeledPoint(sorted_list.index(row) + 1, [float(row.price)]))
+        point_list.append(LabeledPoint(float(row.price), [sorted_list.index(row) + 1]))
 
     return (data[0], sorted_list, point_list)
 
@@ -45,5 +45,4 @@ if __name__ == "__main__":
             deltas.append((each_stock, model))
 
         for delta in deltas:
-
             print delta[0][0],delta[0][1], delta[0][2], delta[1].weights
