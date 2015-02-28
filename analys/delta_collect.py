@@ -18,7 +18,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-select_stock = "select split(rowkey, '_')[1] as date, code, price from hbase_stock where split(rowkey, '_')[1] > '{0}'"
+select_stock = "select split(rowkey, '_')[1] as date, code, delta_ratio from hbase_stock where split(rowkey, '_')[1] > '{0}'"
 
 
 def convert_to_point(data):
@@ -29,7 +29,7 @@ def convert_to_point(data):
     features = []
     labels = []
     for row in sorted_list:
-        labels.append(float(row.price))
+        labels.append(float(row.delta_ratio.strip('%')))
         features.append([sorted_list.index(row) + 1])
 
     clf = linear_model.LinearRegression()
