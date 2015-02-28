@@ -35,7 +35,7 @@ if __name__ == "__main__":
     sc = SparkContext(appName='continueDecrease')
     sqlContext = HiveContext(sc)
 
-    stocks = sqlContext.sql("select * from hbase_stock where split(rowkey, '_')[1] > '{0}'".format(tools.day_after_now(-5))).map(lambda row: (row.code, row)).groupByKey().filter(two_decreace).map(sum_decrease_info).filter(lambda row: row[1] <= -3.0).sortBy(lambda row: row[1]).collect()
+    stocks = sqlContext.sql("select * from hbase_stock where split(rowkey, '_')[1] > '{0}'".format(tools.day_after_now(-2))).map(lambda row: (row.code, row)).groupByKey().filter(two_decreace).map(sum_decrease_info).filter(lambda row: row[1] <= -3.0).sortBy(lambda row: row[1]).collect()
 
     # print len(stocks)
 

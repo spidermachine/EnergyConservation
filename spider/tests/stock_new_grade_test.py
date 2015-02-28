@@ -4,7 +4,7 @@
 __author__ = 'geu'
 
 import unittest
-
+from public.utils import memcache, tables
 
 class StockNewGradeTestCase(unittest.TestCase):
 
@@ -28,9 +28,10 @@ class StockNewGradeTestCase(unittest.TestCase):
         self.xvfb.stop()
 
     def test_stock_grade(self):
-        from spider.extension.facade import WorkerFacade
-        WorkerFacade.process_stock_new_grade(self.extra)
-
+		if not memcache.is_table_collected(tables.TABLE_STOCK_NEW_GRADE):
+			from spider.extension.facade import WorkerFacade
+			WorkerFacade.process_stock_new_grade(self.extra)
+			memcache.table_collected(tables.TABLE_STOCK_NEW_GRADE)
 
 if __name__ == '__main__':
     unittest.main()

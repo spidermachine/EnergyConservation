@@ -4,7 +4,7 @@
 __author__ = 'odoo'
 
 import unittest
-
+from public.utils import memcache, tables
 
 class IndustryTestCase(unittest.TestCase):
 
@@ -28,8 +28,10 @@ class IndustryTestCase(unittest.TestCase):
 
     def test_industry(self):
 
-        from spider.extension.facade import WorkerFacade
-        WorkerFacade.process_industry(self.extra)
+		if not memcache.is_table_collected(tables.TABLE_INDUSTRY):
+			from spider.extension.facade import WorkerFacade
+			WorkerFacade.process_industry(self.extra)
+			memcache.table_collected(tables.TABLE_INDUSTRY)
 
 
 if __name__ == '__main__':

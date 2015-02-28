@@ -4,7 +4,7 @@
 __author__ = 'keping'
 
 import unittest
-
+from public.utils import memcache, tables
 
 class StockTestCase(unittest.TestCase):
 
@@ -29,8 +29,9 @@ class StockTestCase(unittest.TestCase):
 
 
     def test_stock(self):
-        from spider.extension.facade import WorkerFacade
-        WorkerFacade.process_stock(self.extra)
-
+		if not memcache.is_table_collected(tables.TABLE_STOCK):
+			from spider.extension.facade import WorkerFacade
+			WorkerFacade.process_stock(self.extra)
+			memcache.table_collected(table.TABLE_STOCK)
 if __name__ == '__main__':
     unittest.main()
