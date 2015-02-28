@@ -9,12 +9,15 @@ memcache = redis.Redis(connection_pool=pool)
 visited = "visited"
 unvisited = "unvisited"
 
+
 def is_table_collected(table_name):
 
-	return memcache.exist(table_name)
+    return memcache.exists(table_name)
+
 
 def table_collected(table_name):
-	memcache.setex(table_name, 1, 3600*12)
+    memcache.setex(table_name, 1, 3600*12)
+
 
 def set_visited():
 

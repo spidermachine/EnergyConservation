@@ -27,11 +27,11 @@ class StockTestCase(unittest.TestCase):
     def tearDown(self):
         self.xvfb.stop()
 
-
     def test_stock(self):
-		if not memcache.is_table_collected(tables.TABLE_STOCK):
-			from spider.extension.facade import WorkerFacade
-			WorkerFacade.process_stock(self.extra)
-			memcache.table_collected(table.TABLE_STOCK)
+        if not memcache.is_table_collected(tables.TABLE_STOCK):
+            from spider.extension.facade import WorkerFacade
+            WorkerFacade.process_stock(self.extra)
+            memcache.table_collected(tables.TABLE_STOCK)
+
 if __name__ == '__main__':
     unittest.main()
