@@ -42,7 +42,7 @@ if __name__ == "__main__":
     sqlContext = HiveContext(sc)
     # data since month ago
     for day in [-30]:
-        stocks = sqlContext.sql(select_stock.format(tools.day_after_now(day))).map(lambda row: (row.code, row)).groupByKey().map(convert_to_point)
+        stocks = sqlContext.sql(select_stock.format(tools.day_after_now(day))).map(lambda row: (row.code, row)).groupByKey().map(convert_to_point).sortBy(lambda row: row[2])
 
         for each_stock in stocks.collect():
             print each_stock[0], each_stock[1], each_stock[2], each_stock[3]
