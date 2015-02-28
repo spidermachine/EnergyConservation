@@ -38,9 +38,12 @@ if __name__ == "__main__":
     stocks = sqlContext.sql("select * from hbase_stock where split(rowkey, '_')[1] > '{0}'".format(tools.day_after_now(-2))).map(lambda row: (row.code, row)).groupByKey().filter(two_decreace).map(sum_decrease_info).filter(lambda row: row[1] <= -3.0).sortBy(lambda row: row[1]).collect()
 
     # print len(stocks)
-
+    content = ''
     for stock in stocks:
         print stock[0], stock[1]
+        content += stock[0] + ': ' + str(stock[1]) + '\n'
         # for item in stock[1]:
         #     print item.code, item.name, item.delta_ratio
         #     break
+
+    tools.send_mail(u'连跌3天', content, 'energyconversation', 'zkpprivate@163.com')
