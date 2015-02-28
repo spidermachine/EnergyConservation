@@ -11,8 +11,9 @@ from public.utils import tools
 
 from pyspark import SparkContext
 from pyspark.sql import HiveContext
-from pyspark.mllib.regression import LabeledPoint, LinearRegressionWithSGD
 from operator import attrgetter
+from sklearn import linear_model
+
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -25,11 +26,16 @@ def convert_to_point(data):
     # sorted_list = sorted(data[1], cmp=lambda first, second: cmp(first.date, second.date))
     sorted_list = sorted(data[1],  key=attrgetter('date'))
 
-    point_list = []
+    features = []
+    labels = []
     for row in sorted_list:
-        point_list.append(LabeledPoint(float(row.price), [sorted_list.index(row) + 1]))
+        labels.append(float(row.price))
+        features.append([sorted_list.index(row) + 1])
 
-    return (data[0], sorted_list, point_list)
+    clf = linear_model.LinearRegression()
+    clf.fit(features, labels)
+
+    return (data[0], sorted_list, clf.coef_, clf.intercept_)
 
 if __name__ == "__main__":
     sc = SparkContext(appName='delta collect')
@@ -37,12 +43,6 @@ if __name__ == "__main__":
     # data since month ago
     for day in [-30]:
         stocks = sqlContext.sql(select_stock.format(tools.day_after_now(day))).map(lambda row: (row.code, row)).groupByKey().map(convert_to_point)
-        deltas = []
+
         for each_stock in stocks.collect():
-            data_set = sc.parallelize(each_stock[2])
-            model = LinearRegressionWithSGD.train(data_set)
-
-            deltas.append((each_stock, model))
-
-        for delta in deltas:
-            print delta[0][0],delta[0][1], delta[0][2], delta[1].weights
+            print each_stock[0], each_stock[1], each_stock[2], each_stock[3]
