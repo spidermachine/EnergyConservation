@@ -18,6 +18,9 @@ sys.setdefaultencoding('utf8')
 
 select_stock = "select split(rowkey, '_')[0] as date, code, price from hbase_stock where split(rowkey, '_')[0] > '{0}'"
 
+sc = SparkContext(appName='delta collect')
+sqlContext = HiveContext(sc)
+
 
 def convert_to_point(data):
     #rows = [row for row in data[1]]
@@ -33,8 +36,6 @@ def convert_to_point(data):
 
 
 if __name__ == "__main__":
-    sc = SparkContext(appName='delta collect')
-    sqlContext = HiveContext(sc)
 
     # data since month ago
     for day in [-30]:
