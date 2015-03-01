@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4052fdbb-ae05-44c3-b3f4-3fa5ca853e7a" name="Default" comment="refactory">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/analys/decrease_collect.py" afterPath="$PROJECT_DIR$/analys/decrease_collect.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/analys/delta_collect.py" afterPath="$PROJECT_DIR$/analys/delta_collect.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="finance.iws" />
@@ -52,80 +53,26 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="factory.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/spider/extension/factory.py">
+      <file leaf-file-name="delta_collect.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/analys/delta_collect.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="414">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="facade.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/spider/extension/facade.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="913" max-vertical-offset="2466">
-              <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="fund_share_tests.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/spider/tests/fund_share_tests.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="132" max-vertical-offset="648">
-              <caret line="18" column="25" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="extension.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/spider/extension/stock/extension.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4481" max-vertical-offset="5274">
-              <caret line="270" column="39" selection-start-line="270" selection-start-column="39" selection-end-line="270" selection-end-column="39" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="join_template.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/analys/join_template.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9749009" vertical-offset="0" max-vertical-offset="954">
-              <caret line="45" column="40" selection-start-line="45" selection-start-column="40" selection-end-line="45" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.55737704" vertical-offset="204" max-vertical-offset="936">
+              <caret line="41" column="37" selection-start-line="41" selection-start-column="37" selection-end-line="41" selection-end-column="37" />
               <folding>
-                <marker date="1424958057381" expanded="true" signature="790:875" placeholder="select split..." />
-                <marker date="1424958057381" expanded="true" signature="1185:1215" placeholder="select * fro..hbase_fund_share..." />
-                <marker date="1424958057381" expanded="true" signature="1437:1555" placeholder="select g.cod..grade..." />
+                <marker date="1425192696645" expanded="true" signature="391:435" placeholder="select split..." />
+                <marker date="1425192696645" expanded="true" signature="391:505" placeholder="select split..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="hbase.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/spider/extension/hbase.py">
+      <file leaf-file-name="decrease_collect.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/analys/decrease_collect.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1619" max-vertical-offset="2376">
-              <caret line="121" column="44" selection-start-line="121" selection-start-column="44" selection-end-line="121" selection-end-column="44" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="join_collect.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/analys/join_collect.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="341" max-vertical-offset="1098">
-              <caret line="51" column="46" selection-start-line="51" selection-start-column="46" selection-end-line="51" selection-end-column="46" />
+            <state vertical-scroll-proportion="-15.6" vertical-offset="78" max-vertical-offset="918">
+              <caret line="29" column="20" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
               <folding>
-                <marker date="1424584724371" expanded="true" signature="1020:1079" placeholder="select code,..hbase_stock_new_grade..." />
-                <marker date="1424584724371" expanded="true" signature="1324:1385" placeholder="select * fro..hbase_stock..." />
-                <marker date="1424584724371" expanded="true" signature="1771:1801" placeholder="select * fro..hbase_fund_share..." />
-                <marker date="1424584724371" expanded="true" signature="2073:2191" placeholder="select g.cod..grade..." />
+                <marker date="1425191467253" expanded="true" signature="740:801" placeholder="select * fro..hbase_stock..." />
               </folding>
             </state>
           </provider>
@@ -161,6 +108,8 @@
         <option value="$PROJECT_DIR$/spider/extension/facade.py" />
         <option value="$PROJECT_DIR$/spider/extension/stock/extension.py" />
         <option value="$PROJECT_DIR$/analys/join_template.py" />
+        <option value="$PROJECT_DIR$/analys/decrease_collect.py" />
+        <option value="$PROJECT_DIR$/analys/delta_collect.py" />
       </list>
     </option>
   </component>
@@ -215,6 +164,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -281,7 +231,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -754,7 +703,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17849141" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19044062" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
@@ -824,20 +773,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/hive.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="100">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/spider/framework/browser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="702" max-vertical-offset="1836">
-          <caret line="39" column="30" selection-start-line="39" selection-start-column="30" selection-end-line="39" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="729">
@@ -1178,22 +1113,43 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="341" max-vertical-offset="1098">
           <caret line="51" column="46" selection-start-line="51" selection-start-column="46" selection-end-line="51" selection-end-column="46" />
           <folding>
-            <marker date="1424584724371" expanded="true" signature="1020:1079" placeholder="select code,..hbase_stock_new_grade..." />
-            <marker date="1424584724371" expanded="true" signature="1324:1385" placeholder="select * fro..hbase_stock..." />
-            <marker date="1424584724371" expanded="true" signature="1771:1801" placeholder="select * fro..hbase_fund_share..." />
-            <marker date="1424584724371" expanded="true" signature="2073:2191" placeholder="select g.cod..grade..." />
+            <marker date="1425124870375" expanded="true" signature="-1:-1" placeholder="select code,..hbase_stock_new_grade..." />
+            <marker date="1425124870375" expanded="true" signature="-1:-1" placeholder="select * fro..hbase_stock..." />
+            <marker date="1425124870375" expanded="true" signature="-1:-1" placeholder="select * fro..hbase_fund_share..." />
+            <marker date="1425124870375" expanded="true" signature="-1:-1" placeholder="select g.cod..grade..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/analys/join_template.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9749009" vertical-offset="0" max-vertical-offset="954">
-          <caret line="45" column="40" selection-start-line="45" selection-start-column="40" selection-end-line="45" selection-end-column="40" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="216" max-vertical-offset="954">
+          <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
           <folding>
-            <marker date="1424958057381" expanded="true" signature="790:875" placeholder="select split..." />
-            <marker date="1424958057381" expanded="true" signature="1185:1215" placeholder="select * fro..hbase_fund_share..." />
-            <marker date="1424958057381" expanded="true" signature="1437:1555" placeholder="select g.cod..grade..." />
+            <marker date="1424958057381" expanded="true" signature="-1:-1" placeholder="select split..." />
+            <marker date="1424958057381" expanded="true" signature="-1:-1" placeholder="select * fro..hbase_fund_share..." />
+            <marker date="1424958057381" expanded="true" signature="-1:-1" placeholder="select g.cod..grade..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analys/decrease_collect.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-15.6" vertical-offset="78" max-vertical-offset="918">
+          <caret line="29" column="20" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
+          <folding>
+            <marker date="1425191467253" expanded="true" signature="740:801" placeholder="select * fro..hbase_stock..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analys/delta_collect.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.55737704" vertical-offset="204" max-vertical-offset="936">
+          <caret line="41" column="37" selection-start-line="41" selection-start-column="37" selection-end-line="41" selection-end-column="37" />
+          <folding>
+            <marker date="1425192696645" expanded="true" signature="391:435" placeholder="select split..." />
+            <marker date="1425192696645" expanded="true" signature="391:505" placeholder="select split..." />
           </folding>
         </state>
       </provider>
