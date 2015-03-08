@@ -14,10 +14,12 @@ sys.setdefaultencoding('utf8')
 def sum_decrease_info(data):
 
     sum_decreace = 0.0
+    name = ''
     for row in data[1]:
+        name = row.name
         sum_decreace += float(row.delta_ratio.strip('%'))
 
-    return (data[0], sum_decreace)
+    return (data[0], sum_decreace, name)
 
 def two_decreace(data):
 
@@ -35,13 +37,13 @@ if __name__ == "__main__":
     sc = SparkContext(appName='continueDecrease')
     sqlContext = HiveContext(sc)
 
-    stocks = sqlContext.sql("select * from hbase_stock where split(rowkey, '_')[1] > '{0}'".format(tools.day_after_now(-5))).map(lambda row: (row.code, row)).groupByKey().filter(two_decreace).map(sum_decrease_info).filter(lambda row: row[1] <= -3.0).sortBy(lambda row: row[1]).collect()
+    stocks = sqlContext.sql("select * from hbase_stock where split(rowkey, '_')[1] > '{0}'".format(tools.day_after_now(-3))).map(lambda row: (row.code, row)).groupByKey().filter(two_decreace).map(sum_decrease_info).filter(lambda row: row[1] <= -3.0).sortBy(lambda row: row[1]).collect()
 
     # print len(stocks)
     content = ''
     for stock in stocks:
-        print stock[0], stock[1]
-        content += stock[0] + ': ' + str(stock[1]) + '\n'
+        print stock[0], stock[1], stock[2]
+        content += stock[0] + ': ' + str(stock[1]) +'\n'
         # for item in stock[1]:
         #     print item.code, item.name, item.delta_ratio
         #     break

@@ -14,19 +14,18 @@ sys.setdefaultencoding('utf8')
 
 
 def buy(row, avg):
-
-    if float(row.low)/float(row.last) <= avg:
-        return float(row.delta_ratio.strip('%'))
+    if (1-float(row.low)/float(row.last))*100 >= avg:
+        return row.delta_ratio
     else:
         return 100
 
 
 def sales(row, avg):
 
-    if float(row.delta)/float(row.last) >= abs(avg):
-        return row.delta_ratio.strip('%')
+    if float(row.height)/float(row.last)*100 - 1 >= abs(avg):
+        return row.delta_ratio
     else:
-        return float(row.delta)/float(row.last)
+        return float(row.delta)/float(row.last)*100
 
 
 def two_decreace(data):
@@ -40,7 +39,7 @@ def two_decreace(data):
         # sale
         if sale:
             buydata = result.pop()
-            result.append((buydata[0], buydata[1], sales(row)))
+            result.append((buydata[0], buydata[1], sales(row, buydata[0])))
             sale = False
 
         # buy
@@ -72,9 +71,11 @@ if __name__ == "__main__":
     sc = SparkContext(appName='model_one')
     sqlContext = HiveContext(sc)
     otherContext = SQLContext(sc)
-    stocks = sqlContext.sql("select split(rowkey, '_')[0] as date, code, name, price, delta_ratio, start, last, height, low from hbase_stock ")\
+    stocks = sqlContext.sql("select split(rowkey, '_')[0] as date, code, name, price, delta_ratio, delta, start, last, height, low from hbase_stock where code = '601111'")\
         .map(lambda row: (row.code, row))\
-        .groupByKey().map(two_decreace).filter(lambda row: len(row[1]) > 0)
+        .groupByKey().map(two_decreace)#.filter(lambda row: len(row[1]) > 0)
 
-    for stock in stocks.collect():
+    stocks = stocks.collect()
+    for stock in stocks:
         print stock[0], stock[1]
+    print len(stocks)
