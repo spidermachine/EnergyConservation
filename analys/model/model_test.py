@@ -73,7 +73,7 @@ if __name__ == "__main__":
     otherContext = SQLContext(sc)
     stocks = sqlContext.sql("select split(rowkey, '_')[0] as date, code, name, price, delta_ratio, delta, start, last, height, low from hbase_stock where code = '601111'")\
         .map(lambda row: (row.code, row))\
-        .groupByKey().map(two_decreace)#.filter(lambda row: len(row[1]) > 0)
+        .groupByKey().map(two_decreace).filter(lambda row: len(row[1]) > 0)
 
     stocks = stocks.collect()
     for stock in stocks:

@@ -27,18 +27,18 @@ def convert_to_point(data):
     sorted_list = sorted(data[1],  key=attrgetter('date'))
 
     features = []
-    labels = []
+    lables = []
     sum_amplitude = 0.0
     name = ''
     for row in sorted_list:
         name = row.name
         sum_amplitude += float(row.delta_ratio.strip('%'))
-        labels.append(sum_amplitude)
+        lables.append(sum_amplitude)
         features.append([sorted_list.index(row) + 1])
 
     clf = linear_model.LinearRegression()
-    clf.fit(features, labels)
-    return (data[0], name,  clf.coef_)
+    clf.fit(features, lables)
+    return (data[0], name,  clf.coef_, len(lables))
     #return (data[0], sorted_list, clf.coef_, clf.intercept_)
 
 if __name__ == "__main__":
@@ -49,4 +49,4 @@ if __name__ == "__main__":
         stocks = sqlContext.sql(select_stock.format(tools.day_after_now(day))).map(lambda row: (row.code, row)).groupByKey().map(convert_to_point).sortBy(lambda row: row[2][0])
 
         for each_stock in stocks.collect():
-            print each_stock[0], each_stock[1], each_stock[2]
+            print each_stock[0], each_stock[1], each_stock[2], each_stock[3]
