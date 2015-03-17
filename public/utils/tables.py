@@ -81,3 +81,8 @@ GROUP = "group"
 MASTER = "master"
 NOW_PRICE = "now_price"
 
+# buy sales
+TABLE_BUY_SALES = "buy_sales"
+TRADE_TIME = "trade_time"
+BUY_OR_SALES = "buy_or_sales"
+
