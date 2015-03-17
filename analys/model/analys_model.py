@@ -49,9 +49,11 @@ class analys(object):
     def last_days(self):
         import datetime
         day = datetime.datetime.today().weekday()
-        if day == 0:
+        if day in (0, 6):
             return -4
-        return -3
+        elif day == 5:
+            return -3
+        return -2
 
 
     def process(self):

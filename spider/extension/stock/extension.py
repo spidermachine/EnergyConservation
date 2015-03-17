@@ -84,7 +84,7 @@ class StockJournalData(HBaseData):
     def __init__(self, code, name, date, price, delta_ratio, delta, start, last, height, low, count, amount, stto,
                  amount_ratio, appoint_than, amplitude, PE, LTSZ, MC, ret_per, net_income, major_income, category, url):
         """
-        名称  价格 日期 涨跌幅 涨跌额 今开 昨收 最高 最低 成交量 成交额 换手率 量比 委比 振幅 市盈率 流通市值 总市值 每股收益 净利润 主营收 类别 url
+        åç§°  ä»·æ ¼ æ¥æ æ¶¨è·å¹ æ¶¨è·é¢ ä»å¼ æ¨æ¶ æé« æä½ æäº¤é æäº¤é¢ æ¢æç éæ¯ å§æ¯ æ¯å¹ å¸çç æµéå¸å¼ æ»å¸å¼ æ¯è¡æ¶ç åå©æ¶¦ ä¸»è¥æ¶ ç±»å« url
         """
         self.code = code
         self.name = name
@@ -153,7 +153,7 @@ class StockTableParser(TableParser):
                                 tds[13].string, tds[14].string, tds[15].string,
                                 tds[16].string, tds[17].string, tds[18].string,
                                 tds[19].string, tds[20].string, tds[21].string,
-                                tds[22].string, self.generator.extra.get('category', "未知"), a['href'])
+                                tds[22].string, self.generator.extra.get('category', "æªç¥"), a['href'])
 
 
 class StockGradeData(HBaseData):
@@ -229,7 +229,7 @@ class StockAparser(StockTableParser):
                                 tds[13].string, tds[14].string, tds[15].string,
                                 tds[16].string, tds[17].string, tds[18].string,
                                 tds[19].string, tds[20].string, tds[21].string,
-                                tds[22].string, self.generator.extra.get('category', u"未知"), a['href'])
+                                tds[22].string, self.generator.extra.get('category', u"æªç¥"), a['href'])
 
 
 class StockNewGradeData(HBaseData):
@@ -284,8 +284,8 @@ class StockNewGradeParser(TableParser):
 
     def stop_parse(self, generator=None, item=None):
         if generator and item:
-            if item.date != tools.current_date():
-            # if item.date != '2015-02-17':
+            # if item.date != tools.current_date():
+             if item.date != '2015-03-13':
                 generator.extra['continue'] = False
 
 
