@@ -15,16 +15,17 @@ class BSTestCase(unittest.TestCase):
         self.extra['tag'] = "a"
         self.extra['text'] = u"下一页"
         self.extra['more_text'] = u"实时大单"
-        self.extra['timeout'] = 60
+        self.extra['timeout'] = 20
+        self.extra['show'] = True
         self.extra['need'] = False
         self.extra['query'] = "#query=RTDD&DataType=realtimeDaDan"
 
-        from xvfbwrapper import Xvfb
-        self.xvfb = Xvfb(width=1280, height=720)
-        self.xvfb.start()
-
-    def tearDown(self):
-        self.xvfb.stop()
+    #     from xvfbwrapper import Xvfb
+    #     self.xvfb = Xvfb(width=1280, height=720)
+    #     self.xvfb.start()
+    #
+    # def tearDown(self):
+    #     self.xvfb.stop()
 
     def test_buy_sales(self):
 

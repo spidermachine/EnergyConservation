@@ -4,8 +4,8 @@
 __author__ = 'keping.chu'
 
 
-from spider.framework.browser import NextPageDataGenerator
-from spider.extension.generators import TableParser
+from spider.extension.stock.extension import StockDataGenerator
+from spider.extension.generators import TableParser, TableDataGenerator
 from spider.framework.storage import HBaseData
 from public.utils import tables, tools
 
@@ -16,7 +16,7 @@ import time
 from spynner.browser import SpynnerTimeout
 
 
-class BSTableBodyDataGenerator(NextPageDataGenerator):
+class BSTableBodyDataGenerator(StockDataGenerator):
 
     def __init__(self, extra):
 
@@ -24,10 +24,10 @@ class BSTableBodyDataGenerator(NextPageDataGenerator):
 
     def data(self):
 
-        is_loop, data = super(BSTableBodyDataGenerator, self).data()
+        is_loop, data = super(TableDataGenerator, self).data()
         if data:
             soup = BeautifulSoup(data, from_encoding='uft-8')
-            data = soup.find("div", class_="panelContentWrap").find(tags.table, class_="ID_table realtimeRadar-info-table stocks-info-table")
+            data = soup.find("div", class_="panelContentWrap").find(tags.table, class_="ID_table stocks-info-table")
             data = str(data.find(tags.tbody))
         return is_loop, data
 
@@ -39,7 +39,7 @@ class BSTableBodyDataGenerator(NextPageDataGenerator):
         time.sleep(sleep)
 
         # find link of next page
-        radarCon = self.browser.webframe.findFirstElement("div[id='radarCon']")
+        radarCon = self.browser.webframe.findFirstElement("div[id='realtimeDaDanCon']")
         elementList = radarCon.findAll("a[class='pages_flip']")
 
         for element in elementList:
@@ -61,32 +61,37 @@ class BSTableBodyDataGenerator(NextPageDataGenerator):
 
 class BuySalesData(HBaseData):
 
-    def __init__(self, tradetime, code, name, buy_sales, amount, price, amplitude):
+    def __init__(self, code, name, tradetime, price, last_price, amplitude, amount, volume, buy_sales):
 
-        self.tradetime = tradetime
         self.code = code
         self.name = name
-        self.buy_sales = buy_sales
-        self.amount = amount
+        self.tradetime = tradetime
         self.price = price
+        self.last_price = last_price
         self.amplitude = amplitude
+        self.amount = amount
+        self.volume = volume
+        self.buy_sales = buy_sales
 
     def table(self):
         return tables.TABLE_BUY_SALES
 
     def row(self):
-        return tables.ROW_ID.format(self.code, tools.current_date() + "_" + self.tradetime)
+        return tables.ROW_ID.format(self.code, time.time().real)
 
     def columns(self):
-
         return {tables.COLUMN_FAMILY: {
-            tables.TRADE_TIME: self.tradetime,
+
             tables.CODE: self.code,
             tables.NAME: self.name,
-            tables.BUY_OR_SALES: self.buy_sales,
-            tables.AMOUNT: self.amount,
+            tables.DATE: tools.current_date(),
+            tables.TRADE_TIME: self.tradetime,
             tables.PRICE: self.price,
-            tables.AMPLITUDE: self.amplitude
+            tables.LAST_PRICE: self.last_price,
+            tables.AMPLITUDE: self.amplitude,
+            tables.AMOUNT: self.amount,
+            tables.VOLUME: self.volume,
+            tables.BUY_OR_SALES: self.buy_sales
         }}
 
 
@@ -94,10 +99,12 @@ class BuySalesParser(TableParser):
 
     def parse_item(self, tds):
 
-        return BuySalesData(tds[1].string,
-                            self.parse_tag_a(tds[2])[1],
-                            self.parse_tag_a(tds[3])[1],
+        return BuySalesData(self.parse_tag_a(tds[1])[0],
+                            self.parse_tag_a(tds[2])[0],
+                            tds[3].string,
                             tds[4].string,
                             tds[5].string,
                             tds[6].string,
-                            tds[7].string)
+                            tds[7].string,
+                            tds[8].string,
+                            tds[9].string)

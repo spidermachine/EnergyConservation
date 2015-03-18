@@ -85,4 +85,6 @@ NOW_PRICE = "now_price"
 TABLE_BUY_SALES = "buy_sales"
 TRADE_TIME = "trade_time"
 BUY_OR_SALES = "buy_or_sales"
+LAST_PRICE = "last_price"
+VOLUME = "volume"
 
