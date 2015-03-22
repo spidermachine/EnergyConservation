@@ -4,14 +4,15 @@
 __author__ = 'keping.chu'
 
 from spider.framework.browser import JSDataGenerator
-from spider.framework.storage import HBaseStorage
+from spider.extension.hbase import HBaseStorage
 from spider.framework.workers import BasicWorker
 from spider.framework.parser import Parser
+
 
 class WorkerFactory(object):
 
     @staticmethod
-    def createBasicWorker(self, extra):
+    def createBasicWorker(extra):
         """
         basic worker
         """

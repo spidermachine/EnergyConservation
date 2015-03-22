@@ -14,3 +14,8 @@ CREATE EXTERNAL TABLE hbase_stock_new_grade(rowkey STRING, name STRING, code STR
 STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
 WITH SERDEPROPERTIES ('hbase.columns.mapping' = ':key, cf:name, cf:code, cf:grade, cf:master, cf:group, cf:date, cf:price, cf:now_price, cf:url')
 TBLPROPERTIES('hbase.table.name'='stock_new_grade');
+
+CREATE EXTERNAL TABLE hbase_big_bill(rowkey STRING, code STRING, name STRING, date STRING, trade_time STRING, price STRING, last_price STRING, amplitude STRING, amount STRING, volume STRING, buy_or_sales STRING)
+STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
+WITH SERDEPROPERTIES ('hbase.columns.mapping' = ':key, cf:code, cf:name, cf:date, cf:trade_time, cf:price,  cf:last_price, cf:amplitude, cf:amount, cf:volume, cf:buy_or_sales')
+TBLPROPERTIES('hbase.table.name'='big_bill');
