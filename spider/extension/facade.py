@@ -14,6 +14,7 @@ from spider.extension.industry.extension import IndustryParser
 from spider.extension.share.extension import ShareTableParser, ShareDataGenerator
 from spider.extension.fund.extension import FundRetParser, FundRetGenerator, FundParser, FundBodyDataGenerator
 from spider.extension.buysales.extension import BuySalesParser, BSTableBodyDataGenerator
+from spider.extension.money.extenstion import MoneyFlow, MoneyFlowParser
 
 from public.utils import tables, memcache
 
@@ -150,3 +151,9 @@ class WorkerFacade(object):
         parser = BuySalesParser()
         WorkerFacade.worker(data_generator, parser)
 
+    @staticmethod
+    def process_money_flow(extra):
+
+        data_generator = TableBodyDataGenerator(extra)
+        parser = MoneyFlowParser()
+        WorkerFacade.worker(data_generator, parser)

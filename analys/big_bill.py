@@ -7,7 +7,7 @@ __author__ = 'keping.chu'
 from public.utils import tools
 
 from pyspark import SparkContext
-from pyspark.sql import HiveContext, Row, SQLContext
+from pyspark.sql import HiveContext
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -15,10 +15,15 @@ sys.setdefaultencoding('utf8')
 
 def convert(data):
 
-    if data.buy_or_sales == u'买盘':
-        volume = int(data.volume)
+    units = u'万'.encode('utf8').strip()
+    volume = data.volume.encode('utf8').strip()
+    if units in volume:
+        volume = int(float(volume.strip(units)) * 10000)
     else:
-        volume = -int(data.volume)
+        volume = int(float(volume))
+
+    if data.buy_or_sales.encode('utf8') == u'卖盘'.encode('utf8').strip():
+        volume = -volume
 
     return (data.code, volume)
 
@@ -39,8 +44,8 @@ def convert(data):
 if __name__ == "__main__":
     sc = SparkContext(appName='shareDecrease')
     sqlContext = HiveContext(sc)
-    bills = sqlContext.sql("select * from hbase_big_bill where date = '{0}'".format(tools.current_date()))\
-        .map(convert).reduceByKey(lambda x, y: x + y).collect()
+    bills = sqlContext.sql("select * from hbase_big_bill where date = '{0}'".format('2015-03-20'))\
+        .map(convert).reduceByKey(lambda x, y: x + y).sortBy(lambda row: row[1]).collect()
 
     for bill in bills:
         print bill[0], bill[1]

@@ -88,3 +88,12 @@ BUY_OR_SALES = "buy_or_sales"
 LAST_PRICE = "last_price"
 VOLUME = "volume"
 
+# TABLE_SHARE_MONEY
+TABLE_SHARE_MONEY = "table_share_money"
+EXCHANGE = "exchange"
+FLOW_IN = "flow_in"
+FLOW_OUT = "flow_out"
+TRADE_AMOUNT = "trade_amount"
+RATIO = "ratio"
+BIG_FLOW_IN = "big_flow_in"
+
