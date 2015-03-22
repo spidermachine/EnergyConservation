@@ -38,6 +38,7 @@ class MoneyFlow(HBaseData):
 
         return {
             tables.COLUMN_FAMILY: {
+                tables.DATE: tools.current_date(),
                 tables.CODE: self.code,
                 tables.NAME: self.name,
                 tables.PRICE: self.price,
@@ -70,3 +71,12 @@ class MoneyFlowParser(TableParser):
             tds[10].string,
             tds[11].string,
         )
+
+    def parse(self, string, generator=None):
+
+        items = super(MoneyFlowParser, self).parse(string, generator)
+
+        if len(items) != 50:
+            generator.extra['continue'] = False
+
+        return items
