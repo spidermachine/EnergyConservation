@@ -89,7 +89,7 @@ LAST_PRICE = "last_price"
 VOLUME = "volume"
 
 # TABLE_SHARE_MONEY
-TABLE_SHARE_MONEY = "table_share_money"
+TABLE_SHARE_MONEY = "stock_money"
 EXCHANGE = "exchange"
 FLOW_IN = "flow_in"
 FLOW_OUT = "flow_out"
