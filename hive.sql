@@ -20,9 +20,8 @@ STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
 WITH SERDEPROPERTIES ('hbase.columns.mapping' = ':key, cf:code, cf:name, cf:date, cf:trade_time, cf:price,  cf:last_price, cf:amplitude, cf:amount, cf:volume, cf:buy_or_sales')
 TBLPROPERTIES('hbase.table.name'='buy_sales');
 
-
-
-CREATE EXTERNAL TABLE hbase_stock_money(rowkey STRING, code STRING, name STRING, price STRING, date STRING, amplitude STRING, exchange STRING, flow_in STRING, flow_out STRING, balance STRING, trade_amount STRING, ratio STRING, big_flow_in STRING)
+CREATE EXTERNAL TABLE hbase_stock_money(rowkey STRING, code STRING, name STRING, price STRING, date STRING, amplitude STRING, exchange1 STRING, flow_in STRING, flow_out STRING, balance STRING, trade_amount STRING, ratio STRING, big_flow_in STRING)
 STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
-WITH SERDEPROPERTIES ('hbase.columns.mapping' = ':key, cf:code, cf:name, cf:price, cf:date, cf:amplitude,  cf:exchange, cf:flow_in, cf:flow_out, cf:balance, cf:trade_amount, cf:ratio, cf:big_flow_in')
+WITH SERDEPROPERTIES ('hbase.columns.mapping' = ':key, cf:code, cf:name, cf:price, cf:date, cf:amplitude, cf:exchange, cf:flow_in, cf:flow_out, cf:balance, cf:trade_amount, cf:ratio, cf:big_flow_in')
 TBLPROPERTIES('hbase.table.name'='stock_money');
+

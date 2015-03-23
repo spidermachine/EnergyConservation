@@ -72,11 +72,11 @@ class MoneyFlowParser(TableParser):
             tds[11].string,
         )
 
-    def parse(self, string, generator=None):
-
-        items = super(MoneyFlowParser, self).parse(string, generator)
-
-        if len(items) != 50:
-            generator.extra['continue'] = False
-
-        return items
+    # def parse(self, string, generator=None):
+    #
+    #     items = super(MoneyFlowParser, self).parse(string, generator)
+    #
+    #     if len(items) != 50:
+    #         generator.extra['continue'] = False
+    #
+    #     return items
