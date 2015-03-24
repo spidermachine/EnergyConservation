@@ -7,6 +7,6 @@ from analys.model.slope_model import SlopeModel
 
 if __name__ == "__main__":
 
-    slope = SlopeModel(start=-1.0, end=-0.0)
+    slope = SlopeModel(start=0.0, end=1.0)
 
     slope.process()

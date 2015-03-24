@@ -24,12 +24,12 @@ select_stock = """select split(rowkey, '_')[1] as date,
 
 class SlopeModel(object):
 
-    def __init__(self, days=7, start=-10.0, end=10.0):
+    def __init__(self, days=-7, start=-10.0, end=10.0):
         self.days = days
         self.start = start
         self.end = end
 
-    def convert_to_point(data):
+    def convert_to_point(self, data):
         #rows = [row for row in data[1]]
         # sorted_list = sorted(data[1], cmp=lambda first, second: cmp(first.date, second.date))
         sorted_list = sorted(data[1],  key=attrgetter('date'))
