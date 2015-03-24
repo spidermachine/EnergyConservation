@@ -45,7 +45,7 @@ if __name__ == "__main__":
     sc = SparkContext(appName='delta collect')
     sqlContext = HiveContext(sc)
     # data since month ago
-    for day in [-30]:
+    for day in [-7]:
         stocks = sqlContext.sql(select_stock.format(tools.day_after_now(day))).map(lambda row: (row.code, row)).groupByKey().map(convert_to_point).sortBy(lambda row: row[2][0])
 
         for each_stock in stocks.collect():
