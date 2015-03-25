@@ -1,6 +1,8 @@
 # !/usr/bin/python
 # vim: set fileencoding=utf8 :
 #
+TRADE_TIME = 'trade_time'
+STOCK_CODE = 'stock_code'
 __author__ = 'keping.chu'
 import redis
 
@@ -46,4 +48,17 @@ def set_reverse():
         set_visited()
 
 
+def get_big_bill():
+
+    code = memcache.get(STOCK_CODE)
+
+    time = memcache.get(TRADE_TIME)
+
+    return code, time
+
+
+def set_big_bill(code, time):
+
+    memcache.set(STOCK_CODE, code)
+    memcache.set(TRADE_TIME, time)
 

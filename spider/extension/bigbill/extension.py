@@ -7,7 +7,7 @@ __author__ = 'keping.chu'
 from spider.extension.stock.extension import StockDataGenerator
 from spider.extension.generators import TableParser, TableDataGenerator
 from spider.framework.storage import HBaseData
-from public.utils import tables, tools
+from public.utils import tables, tools, memcache
 
 from bs4 import BeautifulSoup
 
@@ -16,11 +16,11 @@ import time
 from spynner.browser import SpynnerTimeout
 
 
-class BSTableBodyDataGenerator(StockDataGenerator):
+class BigBillTableBodyDataGenerator(StockDataGenerator):
 
     def __init__(self, extra):
 
-        super(BSTableBodyDataGenerator, self).__init__(extra)
+        super(BigBillTableBodyDataGenerator, self).__init__(extra)
 
     def data(self):
 
@@ -45,7 +45,7 @@ class BSTableBodyDataGenerator(StockDataGenerator):
         for element in elementList:
             # print str(element.toInnerXml()).strip()
             # found the next page
-            if str(element.toInnerXml()).strip() == self.extra.get('text', u'ä¸ä¸é¡µ'):
+            if str(element.toInnerXml()).strip() == self.extra.get('text', u'下一页'):
                 # trigger the link and load the next page
                 try:
                     self.browser.wk_click_element(element, wait_load=self.extra.get("wait", True),
@@ -59,7 +59,7 @@ class BSTableBodyDataGenerator(StockDataGenerator):
                 break
 
 
-class BuySalesData(HBaseData):
+class BigBillData(HBaseData):
 
     def __init__(self, code, name, tradetime, price, last_price, amplitude, amount, volume, buy_sales):
 
@@ -84,8 +84,7 @@ class BuySalesData(HBaseData):
 
             tables.CODE: self.code,
             tables.NAME: self.name,
-#tables.DATE: tools.current_date(),
-            tables.DATE: '2015-03-20',
+            tables.DATE: tools.current_date(),
             tables.TRADE_TIME: self.tradetime,
             tables.PRICE: self.price,
             tables.LAST_PRICE: self.last_price,
@@ -96,16 +95,39 @@ class BuySalesData(HBaseData):
         }}
 
 
-class BuySalesParser(TableParser):
+class BigBillParser(TableParser):
 
     def parse_item(self, tds):
 
-        return BuySalesData(self.parse_tag_a(tds[1])[0],
-                            self.parse_tag_a(tds[2])[0],
-                            tds[3].string,
-                            tds[4].string,
-                            tds[5].string,
-                            tds[6].string,
-                            tds[7].string,
-                            tds[8].string,
-                            tds[9].string)
+        return BigBillData(self.parse_tag_a(tds[1])[0],
+                           self.parse_tag_a(tds[2])[0],
+                           tds[3].string,
+                           tds[4].string,
+                           tds[5].string,
+                           tds[6].string,
+                           tds[7].string,
+                           tds[8].string,
+                           tds[9].string)
+
+    def stop_parse(self, generator=None, item=None):
+
+        code, time = memcache.get_big_bill()
+
+        if code is None and time is None:
+
+            memcache.set_big_bill(item.code, item.tradetime)
+            generator.extra['item'] = (item.code, item.tradetime)
+            return None
+
+        # set stop item
+        elif generator.extra.get('item', None):
+
+            memcache.set_big_bill(item.code, item.tradetime)
+            generator.extra['item'] = (code, time)
+
+        # stop
+        if generator.extra['item'][0] == item.code and generator.extra['item'][1] == item.tradetime:
+
+            generator.extra['continue'] = False
+
+            raise Exception('stop')
