@@ -1,1 +1,0 @@
-this project is not open, so no comments on the code!
